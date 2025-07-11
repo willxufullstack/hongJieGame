@@ -9,8 +9,12 @@ export class HomeViewMediator extends Mediator<HomeView> {
     @inject(FlowService) private flowService: FlowService;
 
     public initialize(): void {
-        this.eventMap.mapListener(this.view.playButton, "click", this.playButton_onClick, this);
-        this.eventMap.mapListener(this.view.optionsButton, "click", this.optionsButton_onClick, this);
+        if (this.view.playButton) {
+            this.eventMap.mapListener(this.view.playButton, "click", this.playButton_onClick, this);
+        }
+        if (this.view.optionsButton) {
+            this.eventMap.mapListener(this.view.optionsButton, "click", this.optionsButton_onClick, this);
+        }
     }
     public destroy(): void {
         this.eventMap.unmapListeners();

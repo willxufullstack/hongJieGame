@@ -52,14 +52,22 @@ export class HomeView extends Container {
         // const logoImage: Sprite = PixiFactory.getImage(AtlasKeys.LOGO_MATCH_THREE);
     }
     private createButtons(): void {
-        this._playButton = PixiFactory.getIconButton(AtlasKeys.ICON_RESUME, IconButton.TYPE_MEDIUM);
-        this._playButton.x = ViewPortSize.HALF_WIDTH;
-        this._playButton.y = ViewPortSize.MAX_HEIGHT - 50 - MagicValues.BORDER_OFFSET_BOTTOM;
-        this.addChild(this._playButton);
+        try {
+            this._playButton = PixiFactory.getIconButton(AtlasKeys.ICON_RESUME, IconButton.TYPE_MEDIUM);
+            if (this._playButton) {
+                this._playButton.x = ViewPortSize.HALF_WIDTH;
+                this._playButton.y = ViewPortSize.MAX_HEIGHT - 50 - MagicValues.BORDER_OFFSET_BOTTOM;
+                this.addChild(this._playButton);
+            }
 
-        this._optionsButton = PixiFactory.getIconButton(AtlasKeys.ICON_CONFIG, IconButton.TYPE_MEDIUM);
-        this._optionsButton.x = ViewPortSize.HALF_WIDTH;
-        this._optionsButton.y = ViewPortSize.MAX_HEIGHT - MagicValues.BORDER_OFFSET_BOTTOM;
-        this.addChild(this._optionsButton);
+            this._optionsButton = PixiFactory.getIconButton(AtlasKeys.ICON_CONFIG, IconButton.TYPE_MEDIUM);
+            if (this._optionsButton) {
+                this._optionsButton.x = ViewPortSize.HALF_WIDTH;
+                this._optionsButton.y = ViewPortSize.MAX_HEIGHT - MagicValues.BORDER_OFFSET_BOTTOM;
+                this.addChild(this._optionsButton);
+            }
+        } catch (error) {
+            console.error("Error creating buttons:", error);
+        }
     }
 }

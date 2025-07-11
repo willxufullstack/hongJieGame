@@ -17,7 +17,8 @@ export class IconButton extends Sprite {
     private _ico: Sprite;
 
     constructor(shapeType: String = IconButton.TYPE_SMALL) {
-        super(AtlasKeys.getTexture(shapeType + "_up.png"));
+        const upTexture = AtlasKeys.getTexture(shapeType + "_up.png");
+        super(upTexture);
 
         const downStateTexture: Texture = AtlasKeys.getTexture(shapeType + "_down.png");
         const upStateTexture: Texture = AtlasKeys.getTexture(shapeType + "_up.png");
@@ -34,9 +35,14 @@ export class IconButton extends Sprite {
             this.removeChild(this._ico);
         }
 
-        this._ico = new Sprite(AtlasKeys.getTexture(name));
-        this._ico.anchor.set(0.5);
-        this.addChild(this._ico);
+        const iconTexture = AtlasKeys.getTexture(name);
+        if (iconTexture) {
+            this._ico = new Sprite(iconTexture);
+            this._ico.anchor.set(0.5);
+            this.addChild(this._ico);
+        } else {
+            console.warn(`Icon texture not found: ${name}`);
+        }
     }
     private setInitialValues(): void {
         this.anchor.set(0.5);
