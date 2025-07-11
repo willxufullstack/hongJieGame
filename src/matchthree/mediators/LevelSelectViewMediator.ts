@@ -19,10 +19,30 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
     private levelsIds: Map<LevelSelectButton, number>;
 
     public initialize(): void {
-        this.createMapButtons();
+        this.waitForViewReady();
         if (this.view.backButton) {
             this.eventMap.mapListener(this.view.backButton, "click", this.backButton_onTriggeredHandler, this);
         }
+    }
+    
+    private waitForViewReady(attempts: number = 0): void {
+        const maxAttempts = 10;
+        
+        if (this.view && typeof this.view.createLevelButton === 'function' && this.levelsRepository) {
+            // View and dependencies are ready, create buttons
+            this.createMapButtons();
+            return;
+        }
+        
+        if (attempts >= maxAttempts) {
+            console.warn("LevelSelectView not ready after maximum attempts - skipping button creation");
+            return;
+        }
+        
+        // Use requestAnimationFrame for better timing
+        requestAnimationFrame(() => {
+            this.waitForViewReady(attempts + 1);
+        });
     }
     public destroy(): void {
         this.eventMap.unmapListeners();
@@ -30,20 +50,6 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
     private createMapButtons(): void {
         try {
             this.levelsIds = new Map<LevelSelectButton, number>();
-            
-            if (!this.levelsRepository) {
-                console.warn("LevelsRepository not injected properly - deferring button creation");
-                // Retry after a short delay
-                setTimeout(() => this.createMapButtons(), 100);
-                return;
-            }
-            
-            if (!this.view || typeof this.view.createLevelButton !== 'function') {
-                console.warn("LevelSelectView or createLevelButton method not available - deferring button creation");
-                // Retry after a short delay
-                setTimeout(() => this.createMapButtons(), 100);
-                return;
-            }
             
             const levels: LevelInfo[] = this.levelsRepository.getLevels();
             let levelInfo: LevelInfo;
