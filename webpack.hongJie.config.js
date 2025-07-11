@@ -3,17 +3,22 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (function (options) {
+  const isProduction = process.env.NODE_ENV === 'production';
+  
   return {
+    mode: isProduction ? 'production' : 'development',
     entry: {
       main: path.resolve("src/index.ts")
     },
 
     output: {
-      path: __dirname + "/dist",
-      filename: "bundle.js"
+      path: path.resolve(__dirname, "dist"),
+      filename: "bundle.js",
+      publicPath: './',
+      clean: true
     },
 
-    devtool: 'source-map',
+    devtool: isProduction ? false : 'source-map',
 
     module: {
       rules: [{

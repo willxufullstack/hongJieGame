@@ -6,6 +6,8 @@
   "scripts": {
     "autoformat": "prettier --config .prettierrc --write {src,test}/**/*.ts",
     "start": "webpack-dev-server --config ./webpack.hongJie.config.js",
+    "build": "webpack --config ./webpack.hongJie.config.js --mode production",
+    "vercel-build": "npm run build",
     "clean": "rimraf coverage",
     "lint": "tslint-config-prettier-check ./tslint.json",
     "prepush": "npm run clean && npm run autoformat && npm run lint",
