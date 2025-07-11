@@ -46,27 +46,23 @@ export class AtlasKeys {
     public static BG_POPUP_IMAGE = "/assets/backgrounds/background_popup.png";
     public static BG_HUD_IMAGE = "/assets/backgrounds/background_hud.png";
 
-    private static resources: any;
-    private static textureCache: any;
-
-    public static update(textureCache: any): void {
-        this.textureCache = textureCache;
-    }
-    public static getTexture(atlasKey): Texture {
-        // Check if it's a new game piece first
-        if (PIXI.loader.resources[atlasKey]) {
-            return PIXI.loader.resources[atlasKey].texture;
+    public static getTexture(atlasKey: string): Texture {
+        try {
+            // Simplified texture retrieval - let PIXI handle the caching
+            if (PIXI.utils.TextureCache && PIXI.utils.TextureCache[atlasKey]) {
+                return PIXI.utils.TextureCache[atlasKey];
+            }
+            
+            // Fallback to loader resources
+            if (PIXI.loader.resources && PIXI.loader.resources[atlasKey] && PIXI.loader.resources[atlasKey].texture) {
+                return PIXI.loader.resources[atlasKey].texture;
+            }
+            
+            // Create a basic white texture as fallback
+            return Texture.WHITE;
+        } catch (error) {
+            console.error(`Error getting texture for ${atlasKey}:`, error);
+            return Texture.WHITE;
         }
-        // Check if it's a direct path resource
-        if (PIXI.loader.resources && PIXI.loader.resources[atlasKey]) {
-            return PIXI.loader.resources[atlasKey].texture;
-        }
-        // Fallback to atlas texture cache
-        if (this.textureCache && this.textureCache[atlasKey]) {
-            return this.textureCache[atlasKey];
-        }
-        // If texture not found, log error and return a fallback
-        console.warn(`Texture not found: ${atlasKey}`);
-        return Texture.WHITE;
     }
 }

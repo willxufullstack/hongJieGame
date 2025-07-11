@@ -76,7 +76,8 @@ class Main {
         }
     }
     public onLoad(): void {
-        AtlasKeys.update(PIXI.utils.TextureCache);
+        // Texture loading completed - no need for manual cache update
+        console.log("Assets loaded successfully");
     }
     public render = () => {
         this.renderer.render(this.stage);
