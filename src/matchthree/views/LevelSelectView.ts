@@ -35,16 +35,43 @@ export class LevelSelectView extends Container {
     }
     public createLevelButton(text: string): LevelSelectButton {
         try {
-            const level: LevelSelectButton = PixiFactory.getLevelSelectButton();
-            if (level) {
-                level.setText(text);
-                this.addChild(level);
-                return level;
+            // Try to create button using PixiFactory
+            if (PixiFactory && typeof PixiFactory.getLevelSelectButton === 'function') {
+                const level: LevelSelectButton = PixiFactory.getLevelSelectButton();
+                if (level) {
+                    level.setText(text);
+                    this.addChild(level);
+                    return level;
+                }
             }
-            console.warn("Failed to create level button - PixiFactory returned null");
+            
+            // Fallback: create button directly
+            console.log("Using fallback button creation for:", text);
+            const fallbackButton = this.createFallbackLevelButton(text);
+            if (fallbackButton) {
+                this.addChild(fallbackButton);
+                return fallbackButton;
+            }
+            
+            console.warn("All button creation methods failed");
             return null;
         } catch (error) {
             console.error("Error creating level button:", error);
+            return null;
+        }
+    }
+    
+    private createFallbackLevelButton(text: string): LevelSelectButton {
+        try {
+            // Create button directly without PixiFactory
+            const button = new LevelSelectButton();
+            if (button && typeof button.setText === 'function') {
+                button.setText(text);
+                return button;
+            }
+            return null;
+        } catch (error) {
+            console.error("Fallback button creation failed:", error);
             return null;
         }
     }

@@ -12,6 +12,7 @@ export class FlowService {
         this.dispatchEventWith(FlowEvent.SHOW_HOME_VIEW);
     }
     public setGameView(): void {
+        console.log("FlowService.setGameView() called - dispatching SHOW_GAME_VIEW event");
         this.dispatchEventWith(FlowEvent.SHOW_GAME_VIEW);
     }
     public setLevelSelectView(): void {
@@ -28,6 +29,7 @@ export class FlowService {
         this.dispatchEventWith(FlowEvent.SHOW_PAUSE_POPUP);
     }
     public showStartingPopup(): void {
+        console.log("FlowService.showStartingPopup() called - dispatching SHOW_STARTING_POPUP event");
         this.dispatchEventWith(FlowEvent.SHOW_STARTING_POPUP);
     }
     public showGameOverPopup(): void {

@@ -12,21 +12,19 @@ export class GameViewMediator extends Mediator<GameView> {
     private _componentsCreated: boolean = false;
 
     public initialize(): void {
-        // Always wait for level creation before creating components
-        // This ensures proper initialization order
-        this.eventMap.mapListener(this.eventDispatcher, GameEvent.CREATE_LEVEL_COMMAND, this.onLevelCreated, this);
-    }
-    
-    private onLevelCreated(): void {
-        // Remove the listener and create components
-        this.eventMap.unmapListener(this.eventDispatcher, GameEvent.CREATE_LEVEL_COMMAND, this.onLevelCreated, this);
+        console.log("GameViewMediator.initialize() called");
+        // Since GameView is only created during level creation, we can create components immediately
+        // The CREATE_LEVEL_COMMAND has already been processed by the time this mediator is initialized
         this.createComponents();
     }
     
     private createComponents(): void {
+        console.log("GameViewMediator.createComponents() called, componentsCreated:", this._componentsCreated);
         if (!this._componentsCreated) {
+            console.log("Creating GameView components...");
             this.view.createComponents();
             this._componentsCreated = true;
+            console.log("GameView components created successfully");
         }
     }
     

@@ -14,6 +14,7 @@ export class StartingPopupMediator extends Mediator<StartingPopup> {
 
     public initialize(): void {
         try {
+            console.log("StartingPopupMediator.initialize() called");
             this._count = 4;
             
             // Check if view is properly initialized
@@ -22,6 +23,7 @@ export class StartingPopupMediator extends Mediator<StartingPopup> {
                 return;
             }
             
+            console.log("StartingPopup view available, waiting for view ready...");
             // Use requestAnimationFrame to ensure view is fully rendered
             this.waitForViewReady();
         } catch (error) {

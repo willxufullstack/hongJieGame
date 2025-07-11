@@ -13,7 +13,9 @@ export class GameView extends Container {
 
     constructor() {
         super();
+        console.log("GameView constructor called");
         this.createBackground();
+        console.log("GameView background created");
         // Components will be created by the mediator when the view is properly initialized
     }
     public destroy(): void {
@@ -24,11 +26,14 @@ export class GameView extends Container {
         this._hudComponent = null;
     }
     public createComponents(): void {
+        console.log("GameView.createComponents() called");
         this._hudComponent = new HUDGameComponent();
         this.addChild(this._hudComponent);
+        console.log("HUD component created and added");
 
         this._gridField = new GridFieldComponent();
         this.addChild(this._gridField);
+        console.log("Grid field component created and added");
     }
     private createBackground(): void {
         this.addChild(PixiFactory.getBackground());
