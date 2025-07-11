@@ -32,12 +32,16 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
             this.levelsIds = new Map<LevelSelectButton, number>();
             
             if (!this.levelsRepository) {
-                console.error("LevelsRepository not injected properly");
+                console.warn("LevelsRepository not injected properly - deferring button creation");
+                // Retry after a short delay
+                setTimeout(() => this.createMapButtons(), 100);
                 return;
             }
             
             if (!this.view || typeof this.view.createLevelButton !== 'function') {
-                console.error("LevelSelectView or createLevelButton method not available");
+                console.warn("LevelSelectView or createLevelButton method not available - deferring button creation");
+                // Retry after a short delay
+                setTimeout(() => this.createMapButtons(), 100);
                 return;
             }
             
