@@ -25,6 +25,9 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
                 this.eventMap.mapListener(this.view.backButton, "click", this.backButton_onTriggeredHandler, this);
             }
             
+            // Listen for assets loaded event
+            this.eventMap.mapListener(this.eventDispatcher, 'ASSETS_LOADED', this.onAssetsLoaded, this);
+            
             // Try immediate initialization first
             if (this.canCreateButtons()) {
                 this.createMapButtons();
@@ -39,27 +42,70 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
         }
     }
     
+    private onAssetsLoaded(): void {
+        console.log("Assets loaded - attempting to create buttons");
+        // Remove the listener to avoid multiple calls
+        this.eventMap.unmapListener(this.eventDispatcher, 'ASSETS_LOADED', this.onAssetsLoaded, this);
+        
+        // Try to create buttons now that assets are loaded
+        if (this.canCreateButtons()) {
+            this.createMapButtons();
+        } else {
+            // Still wait a bit more for other dependencies
+            setTimeout(() => {
+                if (this.canCreateButtons()) {
+                    this.createMapButtons();
+                } else {
+                    this.createFallbackButtons();
+                }
+            }, 500);
+        }
+    }
+    
     private canCreateButtons(): boolean {
         try {
-            // Basic dependency check - less strict for Netlify compatibility
+            // Check if view is available
             if (!this.view) {
                 console.log("LevelSelectView: view not available");
                 return false;
             }
             
+            // Check if createLevelButton method works (this tests PixiFactory)
+            if (typeof this.view.createLevelButton !== 'function') {
+                console.log("LevelSelectView: createLevelButton method not available");
+                return false;
+            }
+            
+            // Test if PixiFactory can actually create buttons (assets loaded)
+            try {
+                const testButton = this.view.createLevelButton("test");
+                if (testButton) {
+                    // Clean up test button
+                    if (testButton.parent) {
+                        testButton.parent.removeChild(testButton);
+                    }
+                } else {
+                    console.log("LevelSelectView: PixiFactory cannot create buttons (assets not loaded)");
+                    return false;
+                }
+            } catch (testError) {
+                console.log("LevelSelectView: Button creation test failed:", testError);
+                return false;
+            }
+            
+            // Check levels repository
             if (!this.levelsRepository) {
                 console.log("LevelSelectView: levelsRepository not injected");
                 return false;
             }
             
-            // Check if getLevels method exists and returns data
             try {
                 const levels = this.levelsRepository.getLevels();
                 if (!levels || levels.length === 0) {
                     console.log("LevelSelectView: levels array is empty or null");
                     return false;
                 }
-                console.log(`LevelSelectView: Dependencies ready, ${levels.length} levels available`);
+                console.log(`LevelSelectView: All dependencies ready, ${levels.length} levels available`);
                 return true;
             } catch (levelsError) {
                 console.log("LevelSelectView: Error getting levels:", levelsError);
@@ -106,21 +152,71 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
     private createFallbackButtons(): void {
         try {
             console.log("Creating fallback level buttons");
-            // Create a minimal set of buttons if repository isn't ready
             this.levelsIds = new Map<LevelSelectButton, number>();
             
-            // Create 9 default level buttons (common number for match-3 games)
-            for (let i = 0; i < 9; i++) {
-                const levelButton = this.view.createLevelButton(String(i + 1));
+            // Get levels from repository if available, otherwise use defaults
+            let levels;
+            try {
+                levels = this.levelsRepository ? this.levelsRepository.getLevels() : null;
+            } catch (e) {
+                levels = null;
+            }
+            
+            const numLevels = levels && levels.length > 0 ? levels.length : 9;
+            console.log(`Creating ${numLevels} fallback buttons`);
+            
+            for (let i = 0; i < numLevels; i++) {
+                // Try multiple button creation methods
+                let levelButton = null;
+                
+                // Method 1: Try view's createLevelButton
+                try {
+                    if (this.view && typeof this.view.createLevelButton === 'function') {
+                        levelButton = this.view.createLevelButton(String(i + 1));
+                    }
+                } catch (e) {
+                    console.log(`Method 1 failed for button ${i + 1}:`, e);
+                }
+                
+                // Method 2: Try direct LevelSelectButton creation
+                if (!levelButton) {
+                    try {
+                        levelButton = new LevelSelectButton();
+                        if (levelButton && typeof levelButton.setText === 'function') {
+                            levelButton.setText(String(i + 1));
+                            this.view.addChild(levelButton);
+                        } else {
+                            levelButton = null;
+                        }
+                    } catch (e) {
+                        console.log(`Method 2 failed for button ${i + 1}:`, e);
+                        levelButton = null;
+                    }
+                }
+                
                 if (levelButton) {
-                    levelButton.x = ViewPortSize.HALF_WIDTH - (levelButton.width + 4) + Math.floor(i % 3) * (levelButton.width + 4);
-                    levelButton.y = 180 + Math.floor(i / 3) * (levelButton.height + 8);
-                    levelButton.setStars(0); // No stars for fallback
-                    levelButton.anchor.set(0.5);
-                    this.levelsIds.set(levelButton, i);
-                    this.eventMap.mapListener(levelButton, "click", this.levelButton_onTriggeredHandler, this);
+                    try {
+                        levelButton.x = ViewPortSize.HALF_WIDTH - 60 + Math.floor(i % 3) * 60;
+                        levelButton.y = 180 + Math.floor(i / 3) * 60;
+                        if (typeof levelButton.setStars === 'function') {
+                            levelButton.setStars(0);
+                        }
+                        if (typeof levelButton.anchor?.set === 'function') {
+                            levelButton.anchor.set(0.5);
+                        }
+                        
+                        const levelId = levels && levels[i] ? levels[i].levelId : i;
+                        this.levelsIds.set(levelButton, levelId);
+                        this.eventMap.mapListener(levelButton, "click", this.levelButton_onTriggeredHandler, this);
+                        console.log(`Successfully created fallback button ${i + 1}`);
+                    } catch (setupError) {
+                        console.error(`Error setting up button ${i + 1}:`, setupError);
+                    }
+                } else {
+                    console.warn(`Failed to create any button for level ${i + 1}`);
                 }
             }
+            console.log("Fallback buttons creation completed");
         } catch (error) {
             console.error("Error in createFallbackButtons:", error);
         }

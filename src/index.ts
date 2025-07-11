@@ -2,7 +2,7 @@
 /// <reference path="../node_modules/@robotlegsjs/pixi/definitions/pixi.d.ts" />
 import "reflect-metadata";
 
-import { Context, MVCSBundle } from "@robotlegsjs/core";
+import { Context, MVCSBundle, IEventDispatcher } from "@robotlegsjs/core";
 import { ContextView, PixiBundle } from "@robotlegsjs/pixi";
 import { PalidorPixiExtension } from "@robotlegsjs/pixi-palidor";
 import PIXI = require("pixi.js");
@@ -75,9 +75,26 @@ class Main {
             document.body.appendChild(canvas);
         }
     }
-    public onLoad(): void {
-        // Texture loading completed - no need for manual cache update
+    public onLoad = (): void => {
+        // Texture loading completed - notify the system
         console.log("Assets loaded successfully");
+        
+        // Update AtlasKeys with loaded textures
+        if (typeof AtlasKeys.update === 'function') {
+            AtlasKeys.update(PIXI.utils.TextureCache);
+        }
+        
+        // Dispatch event to notify views that assets are ready
+        if (this.context && this.context.injector) {
+            try {
+                const eventDispatcher = this.context.injector.get(IEventDispatcher);
+                if (eventDispatcher) {
+                    eventDispatcher.dispatchEvent(new Event('ASSETS_LOADED'));
+                }
+            } catch (e) {
+                console.log("Could not dispatch ASSETS_LOADED event:", e);
+            }
+        }
     }
     public render = () => {
         this.renderer.render(this.stage);
