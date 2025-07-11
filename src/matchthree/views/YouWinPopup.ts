@@ -27,11 +27,22 @@ export class YouWinPopup extends Container {
         this.createButtons();
     }
     public createStars(numStars: number): void {
-        for (let i = 0; i < numStars; i++) {
-            const star = PixiFactory.getImage(AtlasKeys.POPUP_STAR);
-            star.x = ViewPortSize.HALF_WIDTH - (i * 60 - (numStars - 1) * 60 * 0.5);
-            star.y = 180;
-            this.addChild(star);
+        try {
+            if (typeof numStars !== 'number' || numStars < 0) {
+                console.warn("Invalid numStars value:", numStars);
+                return;
+            }
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = PixiFactory.getImage(AtlasKeys.POPUP_STAR);
+                if (star) {
+                    star.x = ViewPortSize.HALF_WIDTH - (i * 60 - (numStars - 1) * 60 * 0.5);
+                    star.y = 180;
+                    this.addChild(star);
+                }
+            }
+        } catch (error) {
+            console.error("Error in YouWinPopup.createStars:", error);
         }
     }
     public updateValues(score: String, hiScore: String): void {

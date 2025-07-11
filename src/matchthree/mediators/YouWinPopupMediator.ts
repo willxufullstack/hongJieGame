@@ -13,19 +13,49 @@ export class YouWinPopupMediator extends Mediator<YouWinPopup> {
     @inject(GameService) private gameService: GameService;
 
     public initialize(): void {
-        this.view.createStars(this.levelModel.numStars);
-        this.view.updateValues(String(this.levelModel.score), String(this.levelModel.levelInfo.hiScore));
+        try {
+            // Check if view is properly initialized
+            if (!this.view) {
+                console.error("YouWinPopup view not available");
+                return;
+            }
+            
+            if (typeof this.view.createStars !== 'function') {
+                console.error("YouWinPopup.createStars method not available");
+                return;
+            }
+            
+            // Check if levelModel is available
+            if (!this.levelModel) {
+                console.error("LevelModel not available in YouWinPopupMediator");
+                return;
+            }
+            
+            // Check if levelModel has required properties
+            if (typeof this.levelModel.numStars === 'undefined' || !this.levelModel.levelInfo) {
+                console.error("LevelModel properties not available:", {
+                    numStars: this.levelModel.numStars,
+                    levelInfo: this.levelModel.levelInfo
+                });
+                return;
+            }
 
-        if (this.view.retryButton) {
-            this.eventMap.mapListener(this.view.retryButton, "click", this.retryButton_onTriggeredHandler, this);
-        }
-        if (this.view.levelSelectButton) {
-            this.eventMap.mapListener(
-                this.view.levelSelectButton,
-                "click",
-                this.levelSelectButton_onTriggeredHandler,
-                this
-            );
+            this.view.createStars(this.levelModel.numStars);
+            this.view.updateValues(String(this.levelModel.score), String(this.levelModel.levelInfo.hiScore));
+
+            if (this.view.retryButton) {
+                this.eventMap.mapListener(this.view.retryButton, "click", this.retryButton_onTriggeredHandler, this);
+            }
+            if (this.view.levelSelectButton) {
+                this.eventMap.mapListener(
+                    this.view.levelSelectButton,
+                    "click",
+                    this.levelSelectButton_onTriggeredHandler,
+                    this
+                );
+            }
+        } catch (error) {
+            console.error("Error in YouWinPopupMediator.initialize:", error);
         }
     }
     public destroy(): void {
