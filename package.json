@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.hongJie.config.js",
-    "build": "NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack.hongJie.config.js"
+    "build": "webpack --config ./webpack.hongJie.config.js"
   },
   "keywords": [
     "Game"
