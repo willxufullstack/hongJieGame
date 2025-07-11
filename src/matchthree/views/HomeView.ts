@@ -27,13 +27,16 @@ export class HomeView extends Container {
         this.addChild(PixiFactory.getBackground());
     }
     private createImages(): void {
-        const logo: Sprite = PixiFactory.getImage(AtlasKeys.LOGO_MATCH_THREE);
+        // Replace image logo with text logo "HongJie DaMoWang"
+        const logo = PixiFactory.getText("HongJie DaMoWang", 32);
         logo.x = ViewPortSize.HALF_WIDTH;
         logo.y = ViewPortSize.MAX_HEIGHT * 0.3;
-        logo.anchor.set(0.5);
+        logo.pivot.x = logo.width * 0.5;
+        logo.pivot.y = logo.height * 0.5;
         this.addChild(logo);
 
-        // HongJie logo removed - can be added later if needed
+        // Original image logo commented out
+        // const logoImage: Sprite = PixiFactory.getImage(AtlasKeys.LOGO_MATCH_THREE);
     }
     private createButtons(): void {
         this._playButton = PixiFactory.getIconButton(AtlasKeys.ICON_RESUME, IconButton.TYPE_MEDIUM);
