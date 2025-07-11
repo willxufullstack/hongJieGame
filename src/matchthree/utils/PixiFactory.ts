@@ -16,13 +16,18 @@ export class PixiFactory {
         return new PIXI.extras.BitmapText(text, style);
     }
     public static getHorrorText(text: string, fontSize: number = MagicValues.SIZE_DEFAULT): Container {
-        // Use system font for Chinese characters support
+        // Use Google Fonts Nosifer for horror dripping blood effect with Chinese support
         const style = new PIXI.TextStyle({
-            fontFamily: 'Arial, "Microsoft YaHei", "SimHei", sans-serif',
+            fontFamily: 'Nosifer, "Microsoft YaHei", "SimHei", serif',
             fontSize: fontSize,
-            fill: 0xCC0000,  // Dark red color for horror effect
+            fill: 0xFF0000,  // Bright blood red color
             align: 'center',
-            fontWeight: 'bold'
+            fontWeight: 'normal',
+            letterSpacing: 1,
+            dropShadow: true,
+            dropShadowColor: 0x8B0000,
+            dropShadowBlur: 4,
+            dropShadowDistance: 2
         });
 
         const horrorText = new PIXI.Text(text, style);
