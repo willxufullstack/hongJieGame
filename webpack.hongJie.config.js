@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (function (options) {
   const isProduction = process.env.NODE_ENV === 'production';
@@ -26,9 +27,14 @@ module.exports = (function (options) {
       ]
     },
 
-    plugins: [new HtmlWebpackPlugin({
-      template: 'src/index.html'
-    })],
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: 'src/index.html'
+      }),
+      new CopyWebpackPlugin([
+        { from: 'assets', to: 'assets' }
+      ])
+    ],
 
     resolve: {
       extensions: ['.ts', '.js', '.json']
