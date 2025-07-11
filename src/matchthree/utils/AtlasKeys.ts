@@ -39,7 +39,7 @@ export class AtlasKeys {
     public static LEVEL_SELECT_SMALL_STAR = "level_select_small_star";
     public static LOGO_MATCH_THREE = "logo_matchthree.png";
 
-    public static BG_IMAGE = "./assets/backgrounds/background.png";
+    public static BG_IMAGE = "./assets/backgrounds/hongjie.jpeg";
     public static BG_POPUP_IMAGE = "./assets/backgrounds/background_popup.png";
     public static BG_HUD_IMAGE = "./assets/backgrounds/background_hud.png";
 
