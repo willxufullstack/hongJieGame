@@ -19,10 +19,15 @@ export class PixiFactory {
         // Detect if text contains Chinese characters
         const hasChinese = /[\u4e00-\u9fff]/.test(text);
         
+        // Check if Creepster font is actually loaded
+        const isCreepsterLoaded = document.fonts.check('16px Creepster');
+        
         const style = new PIXI.TextStyle({
             fontFamily: hasChinese ? 
                 '"Microsoft YaHei", "SimHei", serif' :  // Chinese: use system fonts
-                '"Creepster", "Nosifer", "Chiller", serif',  // English: use Creepster horror font
+                isCreepsterLoaded ? 
+                    'Creepster, serif' :  // English: use Creepster if loaded
+                    'serif',  // Fallback to serif
             fontSize: fontSize,
             fill: 0xFF0000,  // Bright blood red color
             align: 'center',
