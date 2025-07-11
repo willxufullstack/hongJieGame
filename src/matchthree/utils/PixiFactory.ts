@@ -38,7 +38,11 @@ export class PixiFactory {
         return new Sprite(texture);
     }
     public static getBackground(): Sprite {
-        return new Sprite(AtlasKeys.getTexture(AtlasKeys.BG_IMAGE));
+        const background = new Sprite(AtlasKeys.getTexture(AtlasKeys.BG_IMAGE));
+        // Scale the background to fit the game viewport
+        background.width = ViewPortSize.MAX_WIDTH;
+        background.height = ViewPortSize.MAX_HEIGHT;
+        return background;
     }
     public static getColorBackground(color = 0x000000): Graphics {
         return this.getColorBox(ViewPortSize.MAX_WIDTH, ViewPortSize.MAX_HEIGHT, color);
