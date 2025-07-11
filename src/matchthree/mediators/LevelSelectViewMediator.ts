@@ -28,23 +28,40 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
         this.eventMap.unmapListeners();
     }
     private createMapButtons(): void {
-        this.levelsIds = new Map<LevelSelectButton, number>();
-        const levels: LevelInfo[] = this.levelsRepository.getLevels();
-        let levelInfo: LevelInfo;
-        let levelButton: LevelSelectButton;
-
-        for (let i = 0; i < levels.length; i++) {
-            levelInfo = levels[i];
-            levelButton = this.view.createLevelButton(String(levelInfo.levelId + 1));
-            if (levelButton) {
-                levelButton.x =
-                    ViewPortSize.HALF_WIDTH - (levelButton.width + 4) + Math.floor(i % 3) * (levelButton.width + 4);
-                levelButton.y = 180 + Math.floor(i / 3) * (levelButton.height + 8);
-                levelButton.setStars(ScoreUtils.getNumStars(levelInfo.hiScore, levelInfo.scoreStarts));
-                levelButton.anchor.set(0.5);
-                this.levelsIds.set(levelButton, levels[i].levelId);
-                this.eventMap.mapListener(levelButton, "click", this.levelButton_onTriggeredHandler, this);
+        try {
+            this.levelsIds = new Map<LevelSelectButton, number>();
+            
+            if (!this.levelsRepository) {
+                console.error("LevelsRepository not injected properly");
+                return;
             }
+            
+            if (!this.view || typeof this.view.createLevelButton !== 'function') {
+                console.error("LevelSelectView or createLevelButton method not available");
+                return;
+            }
+            
+            const levels: LevelInfo[] = this.levelsRepository.getLevels();
+            let levelInfo: LevelInfo;
+            let levelButton: LevelSelectButton;
+
+            for (let i = 0; i < levels.length; i++) {
+                levelInfo = levels[i];
+                levelButton = this.view.createLevelButton(String(levelInfo.levelId + 1));
+                if (levelButton) {
+                    levelButton.x =
+                        ViewPortSize.HALF_WIDTH - (levelButton.width + 4) + Math.floor(i % 3) * (levelButton.width + 4);
+                    levelButton.y = 180 + Math.floor(i / 3) * (levelButton.height + 8);
+                    levelButton.setStars(ScoreUtils.getNumStars(levelInfo.hiScore, levelInfo.scoreStarts));
+                    levelButton.anchor.set(0.5);
+                    this.levelsIds.set(levelButton, levels[i].levelId);
+                    this.eventMap.mapListener(levelButton, "click", this.levelButton_onTriggeredHandler, this);
+                } else {
+                    console.warn(`Failed to create level button for level ${i}`);
+                }
+            }
+        } catch (error) {
+            console.error("Error in createMapButtons:", error);
         }
     }
     private backButton_onTriggeredHandler(e: any): void {
