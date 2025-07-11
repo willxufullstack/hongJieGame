@@ -20,13 +20,24 @@ export class LevelSelectView extends Container {
         this.createBackground();
         this.createText();
         this.createButton();
+        
+        // Bind method to instance for production environment
+        this.createLevelButton = this.createLevelButton.bind(this);
     }
     public createLevelButton(text: string): LevelSelectButton {
-        const level: LevelSelectButton = PixiFactory.getLevelSelectButton();
-        level.setText(text);
-        this.addChild(level);
-
-        return level;
+        try {
+            const level: LevelSelectButton = PixiFactory.getLevelSelectButton();
+            level.setText(text);
+            this.addChild(level);
+            return level;
+        } catch (error) {
+            console.error("Error creating level button, using fallback:", error);
+            // Create fallback button
+            const fallbackLevel = new LevelSelectButton();
+            fallbackLevel.setText(text);
+            this.addChild(fallbackLevel);
+            return fallbackLevel;
+        }
     }
     private createBackground(): void {
         this.addChild(PixiFactory.getBackground());
