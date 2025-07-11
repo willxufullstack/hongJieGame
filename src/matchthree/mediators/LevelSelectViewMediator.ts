@@ -176,23 +176,16 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
                 
                 // Method 1: Try view's createLevelButton
                 try {
-                    if (this.view && typeof this.view.createLevelButton === 'function') {
-                        levelButton = this.view.createLevelButton(String(i + 1));
-                    }
+                    levelButton = this.view.createLevelButton(String(i + 1));
                 } catch (e) {
                     console.log(`Method 1 failed for button ${i + 1}:`, e);
+                    levelButton = null;
                 }
                 
                 // Method 2: Try direct LevelSelectButton creation
                 if (!levelButton) {
                     try {
-                        levelButton = new LevelSelectButton();
-                        if (levelButton && typeof levelButton.setText === 'function') {
-                            levelButton.setText(String(i + 1));
-                            this.view.addChild(levelButton);
-                        } else {
-                            levelButton = null;
-                        }
+                        levelButton = this.createDirectLevelButton(String(i + 1));
                     } catch (e) {
                         console.log(`Method 2 failed for button ${i + 1}:`, e);
                         levelButton = null;
@@ -245,15 +238,14 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
                 
                 // Safe button creation with fallback
                 try {
-                    if (this.view && typeof this.view.createLevelButton === 'function') {
-                        levelButton = this.view.createLevelButton(String(levelInfo.levelId + 1));
-                    } else {
-                        console.warn("createLevelButton method not available, using fallback");
-                        levelButton = null;
+                    levelButton = this.view.createLevelButton(String(levelInfo.levelId + 1));
+                    if (!levelButton) {
+                        console.warn("createLevelButton returned null, using direct creation");
+                        levelButton = this.createDirectLevelButton(String(levelInfo.levelId + 1));
                     }
                 } catch (buttonError) {
-                    console.warn("Error creating button, using fallback:", buttonError);
-                    levelButton = null;
+                    console.warn("Error creating button, using direct creation:", buttonError);
+                    levelButton = this.createDirectLevelButton(String(levelInfo.levelId + 1));
                 }
                 
                 if (levelButton) {
@@ -279,6 +271,22 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
     private backButton_onTriggeredHandler(e: any): void {
         this.flowService.setHomeView();
     }
+    private createDirectLevelButton(text: string): LevelSelectButton {
+        try {
+            // Direct creation without going through view
+            const levelButton = new LevelSelectButton();
+            if (levelButton && typeof levelButton.setText === 'function') {
+                levelButton.setText(text);
+                this.view.addChild(levelButton);
+                return levelButton;
+            }
+            return null;
+        } catch (error) {
+            console.error("Direct level button creation failed:", error);
+            return null;
+        }
+    }
+
     private levelButton_onTriggeredHandler(e: any): void {
         try {
             const levelId = this.levelsIds.get(e.currentTarget);
