@@ -24,18 +24,44 @@ export class GridFieldComponentMediator extends Mediator<GridFieldComponent> {
     private _displays: Map<PieceData, Sprite>;
 
     public initialize(): void {
-        this._displays = new Map<PieceData, Sprite>();
-        this.view.generateGrid(this.levelModel.maxCols, this.levelModel.maxRows);
+        try {
+            this._displays = new Map<PieceData, Sprite>();
+            
+            // Check if dependencies are properly injected
+            if (!this.levelModel) {
+                console.error("LevelModel not injected properly in GridFieldComponentMediator");
+                return;
+            }
+            
+            if (!this.gameManager) {
+                console.error("GameManager not injected properly in GridFieldComponentMediator");
+                return;
+            }
+            
+            // Check if levelModel has required properties
+            if (typeof this.levelModel.maxCols === 'undefined' || typeof this.levelModel.maxRows === 'undefined') {
+                console.error("LevelModel maxCols or maxRows not available:", {
+                    maxCols: this.levelModel.maxCols,
+                    maxRows: this.levelModel.maxRows,
+                    levelModel: this.levelModel
+                });
+                return;
+            }
+            
+            this.view.generateGrid(this.levelModel.maxCols, this.levelModel.maxRows);
 
-        this.view.interactive = true;
+            this.view.interactive = true;
 
-        this.eventMap.mapListener(this.eventDispatcher, GameEvent.CLEAR_GRID, this.game_onClearGridHandler, this);
-        this.eventMap.mapListener(this.eventDispatcher, GameEvent.UPDATE_GRID, this.game_onUpdateGridHandler, this);
+            this.eventMap.mapListener(this.eventDispatcher, GameEvent.CLEAR_GRID, this.game_onClearGridHandler, this);
+            this.eventMap.mapListener(this.eventDispatcher, GameEvent.UPDATE_GRID, this.game_onUpdateGridHandler, this);
 
-        this.eventMap.mapListener(this.view, "mousedown", this.view_onSelectPiecesHandler, this);
-        this.eventMap.mapListener(this.view, "mouseup", this.view_onSelectPiecesHandler, this);
+            this.eventMap.mapListener(this.view, "mousedown", this.view_onSelectPiecesHandler, this);
+            this.eventMap.mapListener(this.view, "mouseup", this.view_onSelectPiecesHandler, this);
 
-        this.gameManager.nextStep();
+            this.gameManager.nextStep();
+        } catch (error) {
+            console.error("Error in GridFieldComponentMediator.initialize:", error);
+        }
     }
     public destroy(): void {
         this.eventMap.unmapListeners();

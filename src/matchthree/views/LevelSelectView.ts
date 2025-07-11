@@ -17,13 +17,21 @@ export class LevelSelectView extends Container {
     constructor() {
         super();
 
-        this.createComponents();
+        try {
+            this.createComponents();
+        } catch (error) {
+            console.error("Error in LevelSelectView constructor:", error);
+        }
     }
 
     public createComponents(): void {
-        this.createBackground();
-        this.createText();
-        this.createButton();
+        try {
+            this.createBackground();
+            this.createText();
+            this.createButton();
+        } catch (error) {
+            console.error("Error in LevelSelectView.createComponents:", error);
+        }
     }
     public createLevelButton(text: string): LevelSelectButton {
         try {
