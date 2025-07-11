@@ -22,12 +22,14 @@ export class StartingPopupMediator extends Mediator<StartingPopup> {
                 return;
             }
             
-            if (typeof this.view.changeNumber !== 'function') {
-                console.error("StartingPopup.changeNumber method not available");
-                return;
-            }
-
-            this.tick(this);
+            // Use setTimeout to ensure view is fully constructed before accessing methods
+            setTimeout(() => {
+                if (this.view && typeof this.view.changeNumber === 'function') {
+                    this.tick(this);
+                } else {
+                    console.error("StartingPopup.changeNumber method not available after initialization delay");
+                }
+            }, 10);
         } catch (error) {
             console.error("Error in StartingPopupMediator.initialize:", error);
         }
