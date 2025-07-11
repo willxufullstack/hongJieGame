@@ -19,6 +19,10 @@ export class HomeView extends Container {
     constructor() {
         super();
 
+        this.createComponents();
+    }
+
+    public createComponents(): void {
         this.createBackground();
         this.createImages();
         this.createButtons();

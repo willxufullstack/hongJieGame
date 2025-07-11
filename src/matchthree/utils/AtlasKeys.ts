@@ -57,7 +57,16 @@ export class AtlasKeys {
         if (PIXI.loader.resources[atlasKey]) {
             return PIXI.loader.resources[atlasKey].texture;
         }
+        // Check if it's a direct path resource
+        if (PIXI.loader.resources && PIXI.loader.resources[atlasKey]) {
+            return PIXI.loader.resources[atlasKey].texture;
+        }
         // Fallback to atlas texture cache
-        return this.textureCache[atlasKey];
+        if (this.textureCache && this.textureCache[atlasKey]) {
+            return this.textureCache[atlasKey];
+        }
+        // If texture not found, log error and return a fallback
+        console.warn(`Texture not found: ${atlasKey}`);
+        return Texture.WHITE;
     }
 }

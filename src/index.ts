@@ -35,7 +35,7 @@ class Main {
             .add(AtlasKeys.ATLAS_XML)
             .add(AtlasKeys.FONT_FNT)
             .add(AtlasKeys.BG_HUD_IMAGE)
-            .add(AtlasKeys.BG_IMAGE)
+            .add("bg_image", AtlasKeys.BG_IMAGE)
             .add(AtlasKeys.BG_POPUP_IMAGE)
             // Load new game piece images
             .add("piece_normal_1", AtlasKeys.GAME_PIECES_PATH + "piece_normal_1.png")
