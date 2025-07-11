@@ -20,22 +20,35 @@ export class YouWinPopupMediator extends Mediator<YouWinPopup> {
                 return;
             }
             
-            // Use setTimeout to ensure view is fully constructed before accessing methods
-            setTimeout(() => {
-                this.initializeView();
-            }, 10);
+            // Use requestAnimationFrame to ensure view is fully rendered
+            this.waitForViewReady();
         } catch (error) {
             console.error("Error in YouWinPopupMediator.initialize:", error);
         }
     }
     
+    private waitForViewReady(attempts: number = 0): void {
+        const maxAttempts = 10;
+        
+        if (this.view && typeof this.view.createStars === 'function') {
+            // View is ready, initialize it
+            this.initializeView();
+            return;
+        }
+        
+        if (attempts >= maxAttempts) {
+            console.warn("YouWinPopup view not ready after maximum attempts - skipping initialization");
+            return;
+        }
+        
+        // Use requestAnimationFrame for better timing
+        requestAnimationFrame(() => {
+            this.waitForViewReady(attempts + 1);
+        });
+    }
+    
     private initializeView(): void {
         try {
-            if (!this.view || typeof this.view.createStars !== 'function') {
-                console.error("YouWinPopup.createStars method not available after initialization delay");
-                return;
-            }
-            
             // Check if levelModel is available
             if (!this.levelModel) {
                 console.error("LevelModel not available in YouWinPopupMediator");

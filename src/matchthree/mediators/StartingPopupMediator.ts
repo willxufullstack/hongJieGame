@@ -22,26 +22,32 @@ export class StartingPopupMediator extends Mediator<StartingPopup> {
                 return;
             }
             
-            // Use setTimeout to ensure view is fully constructed before accessing methods
-            setTimeout(() => {
-                if (this.view && typeof this.view.changeNumber === 'function') {
-                    this.tick(this);
-                } else {
-                    console.error("StartingPopup.changeNumber method not available after initialization delay");
-                    // Try again with a longer delay
-                    setTimeout(() => {
-                        if (this.view && typeof this.view.changeNumber === 'function') {
-                            this.tick(this);
-                        } else {
-                            console.error("StartingPopup.changeNumber method still not available - skipping countdown");
-                            this.tick_onComplete();
-                        }
-                    }, 50);
-                }
-            }, 10);
+            // Use requestAnimationFrame to ensure view is fully rendered
+            this.waitForViewReady();
         } catch (error) {
             console.error("Error in StartingPopupMediator.initialize:", error);
         }
+    }
+    
+    private waitForViewReady(attempts: number = 0): void {
+        const maxAttempts = 10;
+        
+        if (this.view && typeof this.view.changeNumber === 'function') {
+            // View is ready, start the countdown
+            this.tick(this);
+            return;
+        }
+        
+        if (attempts >= maxAttempts) {
+            console.warn("StartingPopup view not ready after maximum attempts - skipping countdown");
+            this.tick_onComplete();
+            return;
+        }
+        
+        // Use requestAnimationFrame for better timing
+        requestAnimationFrame(() => {
+            this.waitForViewReady(attempts + 1);
+        });
     }
     public destroy(): void {
         this.eventMap.unmapListeners();
