@@ -10,9 +10,16 @@ export class GameService {
 
     // Commands
     public createLevel(levelId: number): void {
-        const event: GameEvent = new GameEvent(GameEvent.CREATE_LEVEL_COMMAND);
-        event.extra = { levelId };
-        this.eventDispatcher.dispatchEvent(event);
+        try {
+            console.log("GameService.createLevel called with levelId:", levelId);
+            const event: GameEvent = new GameEvent(GameEvent.CREATE_LEVEL_COMMAND);
+            event.extra = { levelId };
+            console.log("Dispatching CREATE_LEVEL_COMMAND event:", event);
+            this.eventDispatcher.dispatchEvent(event);
+            console.log("CREATE_LEVEL_COMMAND event dispatched successfully");
+        } catch (error) {
+            console.error("Error in GameService.createLevel:", error);
+        }
     }
     public retryCommand(): void {
         this.dispatchEventWith(GameEvent.RETRY_GAME_COMMAND);

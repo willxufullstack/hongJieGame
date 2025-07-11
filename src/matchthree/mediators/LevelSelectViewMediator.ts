@@ -280,6 +280,18 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
         this.flowService.setHomeView();
     }
     private levelButton_onTriggeredHandler(e: any): void {
-        this.gameService.createLevel(this.levelsIds.get(e.currentTarget));
+        try {
+            const levelId = this.levelsIds.get(e.currentTarget);
+            console.log("Level button clicked, levelId:", levelId);
+            
+            if (levelId !== undefined) {
+                console.log("Calling gameService.createLevel with levelId:", levelId);
+                this.gameService.createLevel(levelId);
+            } else {
+                console.error("Level ID not found for button:", e.currentTarget);
+            }
+        } catch (error) {
+            console.error("Error in levelButton_onTriggeredHandler:", error);
+        }
     }
 }
