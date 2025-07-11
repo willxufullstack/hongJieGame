@@ -14,18 +14,10 @@ export class IntroView extends Container {
 
     public createComponents(): void {
         this.setupBackground();
-        this.setupImages();
         this.setupText();
     }
     private setupBackground(): void {
         this.addChild(PixiFactory.getColorBackground(0x204d63));
-    }
-    private setupImages(): void {
-        const logo: Sprite = PIXI.Sprite.fromImage(AtlasKeys.LOGO_TYPESCRIPT);
-        logo.anchor.x = 0.5;
-        logo.x = ViewPortSize.HALF_WIDTH;
-        logo.y = ViewPortSize.MAX_HEIGHT - 64;
-        this.addChild(logo);
     }
     private setupText(): void {
         const style = new PIXI.TextStyle({

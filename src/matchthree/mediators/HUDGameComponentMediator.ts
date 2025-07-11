@@ -25,11 +25,9 @@ export class HUDGameComponentMediator extends Mediator<HUDGameComponent> {
             }
             this.eventMap.mapListener(this.eventDispatcher, GameEvent.UPDATE_HUD_DATA, this.game_onUpdateHandler, this);
 
-            // CRITICAL FIX: Check if levelInfo is available (level has been selected)
+            // Level should now be available due to CreateLevelCommand timing fix
             if (!this.levelModel || !this.levelModel.levelInfo) {
-                console.warn("HUDGameComponentMediator initialized before level selection - deferring HUD setup");
-                // Listen for level creation to setup HUD properly
-                this.eventMap.mapListener(this.eventDispatcher, GameEvent.CREATE_LEVEL_COMMAND, this.onLevelCreated, this);
+                console.warn("HUDGameComponentMediator: LevelInfo not available - this should not happen with timing fix");
                 return;
             }
 

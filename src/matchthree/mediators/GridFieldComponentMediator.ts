@@ -38,11 +38,9 @@ export class GridFieldComponentMediator extends Mediator<GridFieldComponent> {
                 return;
             }
             
-            // CRITICAL FIX: Check if levelInfo is available (level has been selected)
+            // Level should now be available due to CreateLevelCommand timing fix
             if (!this.levelModel.levelInfo) {
-                console.warn("GridFieldComponentMediator initialized before level selection - deferring initialization");
-                // Use setTimeout to wait for level creation with retry mechanism
-                this.waitForLevelReady();
+                console.warn("GridFieldComponentMediator: LevelInfo not available - this should not happen with timing fix");
                 return;
             }
             
@@ -50,26 +48,6 @@ export class GridFieldComponentMediator extends Mediator<GridFieldComponent> {
         } catch (error) {
             console.error("Error in GridFieldComponentMediator.initialize:", error);
         }
-    }
-    
-    private waitForLevelReady(attempts: number = 0): void {
-        const maxAttempts = 50; // Increase max attempts for reliability
-        
-        if (this.levelModel && this.levelModel.levelInfo) {
-            // Level is ready, initialize grid
-            this.initializeWithLevel();
-            return;
-        }
-        
-        if (attempts >= maxAttempts) {
-            console.warn("GridFieldComponentMediator: Level not ready after maximum attempts - skipping grid initialization");
-            return;
-        }
-        
-        // Use setTimeout with longer delay for more reliable timing
-        setTimeout(() => {
-            this.waitForLevelReady(attempts + 1);
-        }, 50);
     }
     
     private onLevelCreated(): void {
