@@ -5,18 +5,6 @@
     <title>红姐大魔王 - HongJie Game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <!-- Google Fonts - Nosifer for horror dripping blood effect -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
-    
-    <!-- Force font loading -->
-    <script>
-        // Ensure Creepster font is loaded before game starts
-        document.fonts.ready.then(function() {
-            console.log('All fonts loaded including Creepster');
-        });
-    </script>
     
     <style>
         body {
@@ -33,32 +21,8 @@
         canvas {
             border: 1px solid #333;
         }
-        
-        /* Preload Creepster font */
-        .font-preload {
-            font-family: 'Creepster', cursive;
-            position: absolute;
-            left: -9999px;
-            visibility: hidden;
-        }
-        
-        /* Test Creepster font visibility */
-        .creepster-test {
-            font-family: 'Creepster', cursive;
-            color: red;
-            font-size: 24px;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 1000;
-        }
     </style>
 </head>
 <body>
-    <!-- Font preloader to ensure Nosifer is loaded -->
-    <div class="font-preload">Red Sister Big Devil</div>
-    
-    <!-- Test Creepster font rendering -->
-    <div class="creepster-test">Test Creepster Font</div>
 </body>
 </html>

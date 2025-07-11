@@ -30,47 +30,19 @@ class Main {
             .configure(GameConfig, ViewsConfig, PalidorConfig)
             .initialize();
 
-        // Wait for fonts to load before starting game
-        this.loadFontsAndStartGame();
+        const loader = PIXI.loader
+            .add(AtlasKeys.ATLAS_PNG)
+            .add(AtlasKeys.ATLAS_XML)
+            .add(AtlasKeys.FONT_FNT)
+            .add(AtlasKeys.BG_HUD_IMAGE)
+            .add(AtlasKeys.BG_IMAGE)
+            .add(AtlasKeys.BG_POPUP_IMAGE)
+            .load(this.onLoad);
 
         document.body.appendChild(this.renderer.view);
     }
     public onLoad(): void {
         AtlasKeys.update(PIXI.utils.TextureCache);
-    }
-    
-    private async loadFontsAndStartGame(): Promise<void> {
-        try {
-            // Load Creepster font using FontFace API
-            const creepsterFont = new FontFace('Creepster', 'url(https://fonts.gstatic.com/s/creepster/v13/dg4g_p78rroaKl8kRKo1r7wHTwonmyw.woff2)');
-            await creepsterFont.load();
-            document.fonts.add(creepsterFont);
-            
-            console.log('Creepster font loaded successfully for Canvas');
-            
-            // Now load game assets
-            const loader = PIXI.loader
-                .add(AtlasKeys.ATLAS_PNG)
-                .add(AtlasKeys.ATLAS_XML)
-                .add(AtlasKeys.FONT_FNT)
-                .add(AtlasKeys.BG_HUD_IMAGE)
-                .add(AtlasKeys.BG_IMAGE)
-                .add(AtlasKeys.BG_POPUP_IMAGE)
-                .load(this.onLoad);
-                
-        } catch (error) {
-            console.warn('Creepster font failed to load, using fallback:', error);
-            
-            // Fallback: load game without custom font
-            const loader = PIXI.loader
-                .add(AtlasKeys.ATLAS_PNG)
-                .add(AtlasKeys.ATLAS_XML)
-                .add(AtlasKeys.FONT_FNT)
-                .add(AtlasKeys.BG_HUD_IMAGE)
-                .add(AtlasKeys.BG_IMAGE)
-                .add(AtlasKeys.BG_POPUP_IMAGE)
-                .load(this.onLoad);
-        }
     }
     public render = () => {
         this.renderer.render(this.stage);
