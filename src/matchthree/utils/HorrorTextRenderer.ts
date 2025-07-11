@@ -46,11 +46,11 @@ export class HorrorTextRenderer {
         // Create each letter with custom horror effects
         const letters = text.split('');
         let totalWidth = 0;
-        const letterSpacing = fontSize * 0.8;
+        const letterSpacing = fontSize * 0.6; // Reduced spacing for better fit
         
         letters.forEach((letter, index) => {
             if (letter === ' ') {
-                totalWidth += letterSpacing * 0.5;
+                totalWidth += letterSpacing * 0.4; // Smaller space width
                 return;
             }
             
@@ -82,17 +82,17 @@ export class HorrorTextRenderer {
         const textElement = new Text(letter, style);
         textElement.anchor.set(0.5);
         
-        // Add random distortion
-        const distortion = Math.random() * 0.2 - 0.1;
+        // Add random distortion but keep it subtle for readability
+        const distortion = Math.random() * 0.1 - 0.05; // Reduced distortion
         textElement.skew.x = distortion;
-        textElement.scale.y = 1 + (Math.random() * 0.3 - 0.15);
+        textElement.scale.y = 1 + (Math.random() * 0.2 - 0.1); // Reduced scale variation
         
         letterContainer.addChild(textElement);
         
-        // Add blood drips for each letter
+        // Add blood drips for each letter (reduced for smaller text)
         this.addLetterBloodDrips(letterContainer, fontSize);
         
-        // Add cracks and scratches
+        // Add cracks and scratches (reduced for smaller text)
         this.addHorrorEffects(letterContainer, fontSize);
         
         return letterContainer;
@@ -125,16 +125,19 @@ export class HorrorTextRenderer {
     private static addLetterBloodDrips(container: Container, fontSize: number): void {
         const bloodGraphics = new Graphics();
         
-        // Small blood drips for individual letters
-        for (let i = 0; i < 2; i++) {
-            const x = (Math.random() - 0.5) * fontSize * 0.6;
-            const y = fontSize * 0.2 + Math.random() * fontSize * 0.3;
+        // Fewer, smaller blood drips for compact text
+        const dripCount = fontSize > 20 ? 2 : 1; // Less drips for smaller fonts
+        
+        for (let i = 0; i < dripCount; i++) {
+            const x = (Math.random() - 0.5) * fontSize * 0.4; // Smaller spread
+            const y = fontSize * 0.1 + Math.random() * fontSize * 0.2; // Higher position
             
-            bloodGraphics.beginFill(0x660000, 0.7);
-            bloodGraphics.drawCircle(x, y, 1 + Math.random() * 2);
+            bloodGraphics.beginFill(0x660000, 0.6);
+            const dripSize = Math.max(0.5, fontSize * 0.05); // Scale with font size
+            bloodGraphics.drawCircle(x, y, dripSize);
             
-            // Small drip
-            const dripHeight = 5 + Math.random() * 10;
+            // Smaller drip trail
+            const dripHeight = Math.max(2, fontSize * 0.2);
             bloodGraphics.drawRect(x - 0.5, y, 1, dripHeight);
             bloodGraphics.endFill();
         }
