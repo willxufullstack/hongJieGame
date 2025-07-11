@@ -38,9 +38,11 @@ export class GridFieldComponentMediator extends Mediator<GridFieldComponent> {
                 return;
             }
             
-            // Level should now be available due to CreateLevelCommand timing fix
+            // Check if levelInfo is available (level has been selected)
             if (!this.levelModel.levelInfo) {
-                console.warn("GridFieldComponentMediator: LevelInfo not available - this should not happen with timing fix");
+                console.warn("GridFieldComponentMediator initialized before level selection - deferring initialization");
+                // Listen for level creation to initialize properly
+                this.eventMap.mapListener(this.eventDispatcher, GameEvent.CREATE_LEVEL_COMMAND, this.onLevelCreated, this);
                 return;
             }
             

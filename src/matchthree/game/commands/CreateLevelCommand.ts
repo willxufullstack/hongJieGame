@@ -17,7 +17,6 @@ export class CreateLevelCommand implements ICommand {
     @inject(LevelsRepository) private levelsRepository: LevelsRepository;
 
     public execute(): void {
-        // First, set up the level data completely
         this.levelModel.levelId = this.gameEvent.extra.levelId;
         this.levelModel.levelInfo = this.levelsRepository.getLevelInfoById(this.levelModel.levelId);
         this.levelModel.reset();
@@ -28,11 +27,7 @@ export class CreateLevelCommand implements ICommand {
         this.gameService.updateHUDData();
         this.gameService.start();
 
-        // Use setTimeout to ensure level data is fully set before creating views
-        // This prevents timing issues with mediator initialization
-        setTimeout(() => {
-            this.flowService.setGameView();
-            this.flowService.showStartingPopup();
-        }, 0);
+        this.flowService.setGameView();
+        this.flowService.showStartingPopup();
     }
 }
