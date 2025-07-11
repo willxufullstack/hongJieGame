@@ -13,19 +13,45 @@ export class StartingPopupMediator extends Mediator<StartingPopup> {
     private _count: number;
 
     public initialize(): void {
-        this._count = 4;
+        try {
+            this._count = 4;
+            
+            // Check if view is properly initialized
+            if (!this.view) {
+                console.error("StartingPopup view not available");
+                return;
+            }
+            
+            if (typeof this.view.changeNumber !== 'function') {
+                console.error("StartingPopup.changeNumber method not available");
+                return;
+            }
 
-        this.tick(this);
+            this.tick(this);
+        } catch (error) {
+            console.error("Error in StartingPopupMediator.initialize:", error);
+        }
     }
     public destroy(): void {
         this.eventMap.unmapListeners();
     }
     private tick(obThis: any = this) {
-        obThis._count -= 1;
-        if (obThis._count > 0) {
-            obThis.view.changeNumber(obThis._count);
-            setTimeout(obThis.tick, 300, obThis);
-        } else {
+        try {
+            obThis._count -= 1;
+            if (obThis._count > 0) {
+                // Check if view and method are still available
+                if (obThis.view && typeof obThis.view.changeNumber === 'function') {
+                    obThis.view.changeNumber(obThis._count);
+                    setTimeout(obThis.tick, 300, obThis);
+                } else {
+                    console.error("StartingPopup view or changeNumber method not available during tick");
+                    obThis.tick_onComplete();
+                }
+            } else {
+                obThis.tick_onComplete();
+            }
+        } catch (error) {
+            console.error("Error in StartingPopupMediator.tick:", error);
             obThis.tick_onComplete();
         }
     }

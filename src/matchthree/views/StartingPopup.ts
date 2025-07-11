@@ -17,8 +17,16 @@ export class StartingPopup extends Container {
         this.setupTexts();
     }
     public changeNumber(n: number): void {
-        this._background.alpha -= 0.1;
-        this._decreasingNumber.text = String(n);
+        try {
+            if (this._background) {
+                this._background.alpha -= 0.1;
+            }
+            if (this._decreasingNumber) {
+                this._decreasingNumber.text = String(n);
+            }
+        } catch (error) {
+            console.error("Error in StartingPopup.changeNumber:", error);
+        }
     }
     private setupBackgrounds(): void {
         this._background = PixiFactory.getShadowBackground();
