@@ -27,14 +27,22 @@ export class HomeView extends Container {
         this.addChild(PixiFactory.getBackground());
     }
     private createImages(): void {
-        // Chinese horror title with red color and shadow effect
+        // English subtitle with Nosifer dripping blood font
+        const englishTitle = PixiFactory.getHorrorText("NOSIFER", 28);
+        englishTitle.x = ViewPortSize.HALF_WIDTH;
+        englishTitle.y = ViewPortSize.MAX_HEIGHT * 0.25;
+        englishTitle.pivot.x = englishTitle.width * 0.5;
+        englishTitle.pivot.y = englishTitle.height * 0.5;
+        this.addChild(englishTitle);
+
+        // Chinese main title with simulated blood effect
         const chineseTitle = "\u7EA2\u59D0\u5927\u9B54\u738B"; // Unicode for 红姐大魔王
-        const logo = PixiFactory.getHorrorText(chineseTitle, 36);
-        logo.x = ViewPortSize.HALF_WIDTH;
-        logo.y = ViewPortSize.MAX_HEIGHT * 0.3;
-        logo.pivot.x = logo.width * 0.5;
-        logo.pivot.y = logo.height * 0.5;
-        this.addChild(logo);
+        const chineseLogo = PixiFactory.getHorrorText(chineseTitle, 32);
+        chineseLogo.x = ViewPortSize.HALF_WIDTH;
+        chineseLogo.y = ViewPortSize.MAX_HEIGHT * 0.35;
+        chineseLogo.pivot.x = chineseLogo.width * 0.5;
+        chineseLogo.pivot.y = chineseLogo.height * 0.5;
+        this.addChild(chineseLogo);
 
         // Original image logo commented out
         // const logoImage: Sprite = PixiFactory.getImage(AtlasKeys.LOGO_MATCH_THREE);
