@@ -14,6 +14,7 @@ export class GameView extends Container {
     constructor() {
         super();
         this.createBackground();
+        // Don't create components in constructor - they will be created when needed
     }
     public destroy(): void {
         this.removeChild(this._gridField);
