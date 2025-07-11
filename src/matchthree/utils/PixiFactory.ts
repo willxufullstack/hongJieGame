@@ -5,6 +5,8 @@ import { LevelSelectButton } from "./../views/components/LevelSelectButton";
 import { AtlasKeys } from "./AtlasKeys";
 import { MagicValues } from "./MagicValues";
 import { ViewPortSize } from "./ViewPortSize";
+import { HorrorTextRenderer } from "./HorrorTextRenderer";
+import { PieceImageProcessor } from "./PieceImageProcessor";
 
 export class PixiFactory {
     public static getText(text: string, fontSize: number = MagicValues.SIZE_DEFAULT): Container {
@@ -16,67 +18,8 @@ export class PixiFactory {
         return new PIXI.extras.BitmapText(text, style);
     }
     public static getHorrorText(text: string, fontSize: number = MagicValues.SIZE_DEFAULT): Container {
-        // Detect if text contains Chinese characters
-        const hasChinese = /[\u4e00-\u9fff]/.test(text);
-        
-        // Check if Creepster font is actually loaded
-        const isCreepsterLoaded = document.fonts.check('16px Creepster');
-        
-        const style = new PIXI.TextStyle({
-            fontFamily: hasChinese ? 
-                '"Microsoft YaHei", "SimHei", serif' :  // Chinese: use system fonts
-                isCreepsterLoaded ? 
-                    'Creepster, serif' :  // English: use Creepster if loaded
-                    'serif',  // Fallback to serif
-            fontSize: fontSize,
-            fill: 0xFF0000,  // Bright blood red color
-            align: 'center',
-            fontWeight: hasChinese ? 'bold' : 'normal',
-            letterSpacing: hasChinese ? 0 : 2,  // More spacing for English Nosifer
-            dropShadow: true,
-            dropShadowColor: 0x8B0000,
-            dropShadowBlur: hasChinese ? 6 : 4,  // More blur for Chinese to simulate dripping
-            dropShadowDistance: hasChinese ? 3 : 2
-        });
-
-        const horrorText = new PIXI.Text(text, style);
-        
-        // Add multiple shadow layers for more dramatic effect
-        const shadowStyle1 = new PIXI.TextStyle({
-            fontFamily: 'Arial, "Microsoft YaHei", "SimHei", sans-serif',
-            fontSize: fontSize,
-            fill: 0x000000,  // Black shadow
-            align: 'center',
-            fontWeight: 'bold'
-        });
-        
-        const shadowStyle2 = new PIXI.TextStyle({
-            fontFamily: 'Arial, "Microsoft YaHei", "SimHei", sans-serif',
-            fontSize: fontSize,
-            fill: 0x440000,  // Dark red shadow
-            align: 'center',
-            fontWeight: 'bold'
-        });
-        
-        const shadow1 = new PIXI.Text(text, shadowStyle1);
-        const shadow2 = new PIXI.Text(text, shadowStyle2);
-        
-        const container = new Container();
-        
-        // Multiple shadow layers for depth
-        shadow2.x = 4;
-        shadow2.y = 4;
-        shadow2.alpha = 0.5;
-        
-        shadow1.x = 2;
-        shadow1.y = 2;
-        shadow1.alpha = 0.8;
-        
-        container.addChild(shadow2);
-        container.addChild(shadow1);
-        container.addChild(horrorText);
-        
-        return container;
+        // Use custom Canvas-drawn horror effects instead of fonts
+        return HorrorTextRenderer.createHorrorText(text, fontSize);
     }
     public static getTitle(label: string): Container {
         const style = {

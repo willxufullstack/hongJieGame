@@ -4,6 +4,9 @@ import { Texture } from "pixi.js";
 export class AtlasKeys {
     public static ATLAS_XML = "./assets/matchthree-pixijs-atlas.json";
     public static ATLAS_PNG = "./assets/matchthree-pixijs-atlas.png";
+    
+    // New game pieces paths
+    public static GAME_PIECES_PATH = "./assets/game_pieces/";
 
     public static FONT_FNT = "./assets/fonts/BerlinSansDemi.fnt";
 
