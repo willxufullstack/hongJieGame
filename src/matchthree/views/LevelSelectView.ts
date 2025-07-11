@@ -44,9 +44,11 @@ export class LevelSelectView extends Container {
     }
     private createButton(): void {
         this._backButton = PixiFactory.getIconButton(AtlasKeys.ICON_HOME, IconButton.TYPE_MEDIUM);
-        this._backButton.x = ViewPortSize.HALF_WIDTH;
-        this._backButton.y = ViewPortSize.MAX_HEIGHT - MagicValues.BORDER_OFFSET_BOTTOM;
-        this._backButton.anchor.set(0.5);
-        this.addChild(this._backButton);
+        if (this._backButton) {
+            this._backButton.x = ViewPortSize.HALF_WIDTH;
+            this._backButton.y = ViewPortSize.MAX_HEIGHT - MagicValues.BORDER_OFFSET_BOTTOM;
+            this._backButton.anchor.set(0.5);
+            this.addChild(this._backButton);
+        }
     }
 }

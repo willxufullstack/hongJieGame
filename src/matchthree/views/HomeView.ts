@@ -58,6 +58,8 @@ export class HomeView extends Container {
                 this._playButton.x = ViewPortSize.HALF_WIDTH;
                 this._playButton.y = ViewPortSize.MAX_HEIGHT - 50 - MagicValues.BORDER_OFFSET_BOTTOM;
                 this.addChild(this._playButton);
+            } else {
+                console.warn("Failed to create play button");
             }
 
             this._optionsButton = PixiFactory.getIconButton(AtlasKeys.ICON_CONFIG, IconButton.TYPE_MEDIUM);
@@ -65,6 +67,8 @@ export class HomeView extends Container {
                 this._optionsButton.x = ViewPortSize.HALF_WIDTH;
                 this._optionsButton.y = ViewPortSize.MAX_HEIGHT - MagicValues.BORDER_OFFSET_BOTTOM;
                 this.addChild(this._optionsButton);
+            } else {
+                console.warn("Failed to create options button");
             }
         } catch (error) {
             console.error("Error creating buttons:", error);

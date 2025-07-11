@@ -51,7 +51,7 @@ export class PixiFactory {
         return new Sprite(texture);
     }
     public static getBackground(): Sprite {
-        const background = new Sprite(AtlasKeys.getTexture("bg_image"));
+        const background = new Sprite(AtlasKeys.getTexture(AtlasKeys.BG_IMAGE));
         // Scale the background to fit the game viewport
         background.width = ViewPortSize.MAX_WIDTH;
         background.height = ViewPortSize.MAX_HEIGHT;

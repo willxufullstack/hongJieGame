@@ -42,13 +42,17 @@ export class OptionsView extends Container {
     }
     private createButtons(): void {
         this._deleteButton = PixiFactory.getIconButton(AtlasKeys.ICON_DELETE, IconButton.TYPE_SMALL_DANGER);
-        this._deleteButton.x = ViewPortSize.MAX_WIDTH - MagicValues.BORDER_OFFSET_POPUP - 25;
-        this._deleteButton.y = 200;
-        this.addChild(this._deleteButton);
+        if (this._deleteButton) {
+            this._deleteButton.x = ViewPortSize.MAX_WIDTH - MagicValues.BORDER_OFFSET_POPUP - 25;
+            this._deleteButton.y = 200;
+            this.addChild(this._deleteButton);
+        }
 
         this._backButton = PixiFactory.getIconButton(AtlasKeys.ICON_HOME, IconButton.TYPE_MEDIUM);
-        this._backButton.x = ViewPortSize.HALF_WIDTH;
-        this._backButton.y = ViewPortSize.MAX_HEIGHT - MagicValues.BORDER_OFFSET_BOTTOM;
-        this.addChild(this._backButton);
+        if (this._backButton) {
+            this._backButton.x = ViewPortSize.HALF_WIDTH;
+            this._backButton.y = ViewPortSize.MAX_HEIGHT - MagicValues.BORDER_OFFSET_BOTTOM;
+            this.addChild(this._backButton);
+        }
     }
 }
