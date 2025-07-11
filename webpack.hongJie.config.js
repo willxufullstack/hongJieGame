@@ -6,7 +6,6 @@ module.exports = (function (options) {
   const isProduction = process.env.NODE_ENV === 'production';
   
   return {
-    mode: isProduction ? 'production' : 'development',
     entry: {
       main: path.resolve("src/index.ts")
     },
@@ -14,8 +13,7 @@ module.exports = (function (options) {
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "bundle.js",
-      publicPath: './',
-      clean: true
+      publicPath: './'
     },
 
     devtool: isProduction ? false : 'source-map',

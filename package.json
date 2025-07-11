@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "description": "HongJie Match3 Game",
   "main": "src/index.ts",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "packageManager": "npm@8.0.0",
   "scripts": {
     "autoformat": "prettier --config .prettierrc --write {src,test}/**/*.ts",
     "start": "webpack-dev-server --config ./webpack.hongJie.config.js",
-    "build": "webpack --config ./webpack.hongJie.config.js --mode production",
-    "vercel-build": "NODE_ENV=production npm run build",
+    "build": "NODE_ENV=production webpack --config ./webpack.hongJie.config.js -p",
+    "vercel-build": "npm run build",
     "clean": "rimraf coverage",
     "lint": "tslint-config-prettier-check ./tslint.json",
     "prepush": "npm run clean && npm run autoformat && npm run lint",

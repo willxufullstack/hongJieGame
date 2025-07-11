@@ -1,15 +1,13 @@
 {
-  "name": "hong-jie-game",
   "version": 2,
-  "buildCommand": "npm run vercel-build",
-  "installCommand": "npm install",
-  "framework": null,
+  "name": "hong-jie-game",
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist"
+        "distDir": "dist",
+        "framework": null
       }
     }
   ],
@@ -18,5 +16,10 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    }
+  }
 }
