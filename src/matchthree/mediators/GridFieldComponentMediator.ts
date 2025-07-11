@@ -38,30 +38,49 @@ export class GridFieldComponentMediator extends Mediator<GridFieldComponent> {
                 return;
             }
             
-            // Check if levelModel has required properties
-            if (typeof this.levelModel.maxCols === 'undefined' || typeof this.levelModel.maxRows === 'undefined') {
-                console.error("LevelModel maxCols or maxRows not available:", {
-                    maxCols: this.levelModel.maxCols,
-                    maxRows: this.levelModel.maxRows,
-                    levelModel: this.levelModel
-                });
+            // CRITICAL FIX: Check if levelInfo is available (level has been selected)
+            if (!this.levelModel.levelInfo) {
+                console.warn("GridFieldComponentMediator initialized before level selection - deferring initialization");
+                // Listen for level creation to initialize properly
+                this.eventMap.mapListener(this.eventDispatcher, GameEvent.CREATE_LEVEL_COMMAND, this.onLevelCreated, this);
                 return;
             }
             
-            this.view.generateGrid(this.levelModel.maxCols, this.levelModel.maxRows);
-
-            this.view.interactive = true;
-
-            this.eventMap.mapListener(this.eventDispatcher, GameEvent.CLEAR_GRID, this.game_onClearGridHandler, this);
-            this.eventMap.mapListener(this.eventDispatcher, GameEvent.UPDATE_GRID, this.game_onUpdateGridHandler, this);
-
-            this.eventMap.mapListener(this.view, "mousedown", this.view_onSelectPiecesHandler, this);
-            this.eventMap.mapListener(this.view, "mouseup", this.view_onSelectPiecesHandler, this);
-
-            this.gameManager.nextStep();
+            this.initializeWithLevel();
         } catch (error) {
             console.error("Error in GridFieldComponentMediator.initialize:", error);
         }
+    }
+    
+    private onLevelCreated(): void {
+        // Remove the temporary listener
+        this.eventMap.unmapListener(this.eventDispatcher, GameEvent.CREATE_LEVEL_COMMAND, this.onLevelCreated, this);
+        // Now initialize properly
+        this.initializeWithLevel();
+    }
+    
+    private initializeWithLevel(): void {
+        // Check if levelModel has required properties
+        if (typeof this.levelModel.maxCols === 'undefined' || typeof this.levelModel.maxRows === 'undefined') {
+            console.error("LevelModel maxCols or maxRows not available:", {
+                maxCols: this.levelModel.maxCols,
+                maxRows: this.levelModel.maxRows,
+                levelModel: this.levelModel
+            });
+            return;
+        }
+        
+        this.view.generateGrid(this.levelModel.maxCols, this.levelModel.maxRows);
+
+        this.view.interactive = true;
+
+        this.eventMap.mapListener(this.eventDispatcher, GameEvent.CLEAR_GRID, this.game_onClearGridHandler, this);
+        this.eventMap.mapListener(this.eventDispatcher, GameEvent.UPDATE_GRID, this.game_onUpdateGridHandler, this);
+
+        this.eventMap.mapListener(this.view, "mousedown", this.view_onSelectPiecesHandler, this);
+        this.eventMap.mapListener(this.view, "mouseup", this.view_onSelectPiecesHandler, this);
+
+        this.gameManager.nextStep();
     }
     public destroy(): void {
         this.eventMap.unmapListeners();

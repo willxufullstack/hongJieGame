@@ -19,11 +19,30 @@ export class HUDGameComponentMediator extends Mediator<HUDGameComponent> {
     private _paused: boolean;
 
     public initialize(): void {
-        if (this.view.pauseButton) {
-            this.eventMap.mapListener(this.view.pauseButton, "click", this.pauseButton_onTriggeredHandler, this);
-        }
-        this.eventMap.mapListener(this.eventDispatcher, GameEvent.UPDATE_HUD_DATA, this.game_onUpdateHandler, this);
+        try {
+            if (this.view.pauseButton) {
+                this.eventMap.mapListener(this.view.pauseButton, "click", this.pauseButton_onTriggeredHandler, this);
+            }
+            this.eventMap.mapListener(this.eventDispatcher, GameEvent.UPDATE_HUD_DATA, this.game_onUpdateHandler, this);
 
+            // CRITICAL FIX: Check if levelInfo is available (level has been selected)
+            if (!this.levelModel || !this.levelModel.levelInfo) {
+                console.warn("HUDGameComponentMediator initialized before level selection - deferring HUD setup");
+                // Listen for level creation to setup HUD properly
+                this.eventMap.mapListener(this.eventDispatcher, GameEvent.CREATE_LEVEL_COMMAND, this.onLevelCreated, this);
+                return;
+            }
+
+            this.setupHUDType();
+        } catch (error) {
+            console.error("Error in HUDGameComponentMediator.initialize:", error);
+        }
+    }
+    
+    private onLevelCreated(): void {
+        // Remove the temporary listener
+        this.eventMap.unmapListener(this.eventDispatcher, GameEvent.CREATE_LEVEL_COMMAND, this.onLevelCreated, this);
+        // Now setup HUD properly
         this.setupHUDType();
     }
     public destroy(): void {
