@@ -12,6 +12,7 @@
     "autoformat": "prettier --config .prettierrc --write {src,test}/**/*.ts",
     "start": "./node_modules/.bin/webpack-dev-server --config ./webpack.hongJie.config.js",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack.hongJie.config.js -p",
+    "netlify-build": "npm run build",
     "vercel-build": "npm run build",
     "clean": "rimraf coverage",
     "lint": "tslint-config-prettier-check ./tslint.json",
