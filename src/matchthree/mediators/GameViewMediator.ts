@@ -12,13 +12,9 @@ export class GameViewMediator extends Mediator<GameView> {
     private _componentsCreated: boolean = false;
 
     public initialize(): void {
-        // Check if level is already created
-        if (this.levelModel && this.levelModel.levelInfo) {
-            this.createComponents();
-        } else {
-            // Wait for level creation before creating components
-            this.eventMap.mapListener(this.eventDispatcher, GameEvent.CREATE_LEVEL_COMMAND, this.onLevelCreated, this);
-        }
+        // Always wait for level creation before creating components
+        // This ensures proper initialization order
+        this.eventMap.mapListener(this.eventDispatcher, GameEvent.CREATE_LEVEL_COMMAND, this.onLevelCreated, this);
     }
     
     private onLevelCreated(): void {
