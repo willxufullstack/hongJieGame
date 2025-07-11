@@ -2,13 +2,13 @@ import { PieceUtils } from "../game/utils/PieceUtils";
 import { Texture } from "pixi.js";
 
 export class AtlasKeys {
-    public static ATLAS_XML = "./assets/matchthree-pixijs-atlas.json";
-    public static ATLAS_PNG = "./assets/matchthree-pixijs-atlas.png";
+    public static ATLAS_XML = "/assets/matchthree-pixijs-atlas.json";
+    public static ATLAS_PNG = "/assets/matchthree-pixijs-atlas.png";
     
     // New game pieces paths
-    public static GAME_PIECES_PATH = "./assets/game_pieces/";
+    public static GAME_PIECES_PATH = "/assets/game_pieces/";
 
-    public static FONT_FNT = "./assets/fonts/BerlinSansDemi.fnt";
+    public static FONT_FNT = "/assets/fonts/BerlinSansDemi.fnt";
 
     /* ATLAS PREFIX */
     public static LOGO_HONGJIE = "logo_hongjie.png";
@@ -42,9 +42,9 @@ export class AtlasKeys {
     public static LEVEL_SELECT_SMALL_STAR = "level_select_small_star";
     public static LOGO_MATCH_THREE = "logo_matchthree.png";
 
-    public static BG_IMAGE = "./assets/backgrounds/hongjie.jpeg";
-    public static BG_POPUP_IMAGE = "./assets/backgrounds/background_popup.png";
-    public static BG_HUD_IMAGE = "./assets/backgrounds/background_hud.png";
+    public static BG_IMAGE = "/assets/backgrounds/hongjie.jpeg";
+    public static BG_POPUP_IMAGE = "/assets/backgrounds/background_popup.png";
+    public static BG_HUD_IMAGE = "/assets/backgrounds/background_hud.png";
 
     private static resources: any;
     private static textureCache: any;
