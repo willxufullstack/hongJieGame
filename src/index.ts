@@ -65,7 +65,15 @@ class Main {
         canvas.style.left = '50%';
         canvas.style.top = '50%';
         canvas.style.transform = 'translate(-50%, -50%)';
-        document.body.appendChild(canvas);
+        
+        // Ensure DOM is ready before appending canvas
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                document.body.appendChild(canvas);
+            });
+        } else {
+            document.body.appendChild(canvas);
+        }
     }
     public onLoad(): void {
         AtlasKeys.update(PIXI.utils.TextureCache);
@@ -75,5 +83,14 @@ class Main {
         window.requestAnimationFrame(this.render);
     };
 }
-const main = new Main();
-main.render();
+
+// Ensure DOM is ready before initializing the game
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        const main = new Main();
+        main.render();
+    });
+} else {
+    const main = new Main();
+    main.render();
+}
