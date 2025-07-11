@@ -30,24 +30,40 @@ export class StartingPopupMediator extends Mediator<StartingPopup> {
     }
     
     private waitForViewReady(attempts: number = 0): void {
-        const maxAttempts = 10;
+        const maxAttempts = 20; // Increased attempts for better reliability
         
-        if (this.view && typeof this.view.changeNumber === 'function') {
-            // View is ready, start the countdown
-            this.tick(this);
-            return;
+        try {
+            // Check if view is properly initialized and has required methods
+            if (this.view && 
+                typeof this.view.changeNumber === 'function' &&
+                this.view.parent) { // Ensure view is added to display list
+                
+                // View is ready, start the countdown
+                this.tick(this);
+                return;
+            }
+            
+            if (attempts >= maxAttempts) {
+                console.warn("StartingPopup view not ready after maximum attempts - skipping countdown");
+                this.tick_onComplete();
+                return;
+            }
+            
+            // Use setTimeout with shorter delay for more responsive checking
+            setTimeout(() => {
+                this.waitForViewReady(attempts + 1);
+            }, 50);
+        } catch (error) {
+            console.error("Error in StartingPopup waitForViewReady:", error);
+            if (attempts < maxAttempts) {
+                setTimeout(() => {
+                    this.waitForViewReady(attempts + 1);
+                }, 100);
+            } else {
+                // Fallback to complete the flow
+                this.tick_onComplete();
+            }
         }
-        
-        if (attempts >= maxAttempts) {
-            console.warn("StartingPopup view not ready after maximum attempts - skipping countdown");
-            this.tick_onComplete();
-            return;
-        }
-        
-        // Use requestAnimationFrame for better timing
-        requestAnimationFrame(() => {
-            this.waitForViewReady(attempts + 1);
-        });
     }
     public destroy(): void {
         this.eventMap.unmapListeners();

@@ -25,9 +25,9 @@ export class HUDGameComponentMediator extends Mediator<HUDGameComponent> {
             }
             this.eventMap.mapListener(this.eventDispatcher, GameEvent.UPDATE_HUD_DATA, this.game_onUpdateHandler, this);
 
-            // LevelInfo should always be available now due to proper initialization order
+            // Wait for level creation before setting up HUD
             if (!this.levelModel || !this.levelModel.levelInfo) {
-                console.error("HUDGameComponentMediator: LevelInfo not available - this should not happen");
+                this.eventMap.mapListener(this.eventDispatcher, GameEvent.CREATE_LEVEL_COMMAND, this.onLevelCreated, this);
                 return;
             }
 

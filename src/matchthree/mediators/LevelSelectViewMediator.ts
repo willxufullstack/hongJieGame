@@ -19,30 +19,54 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
     private levelsIds: Map<LevelSelectButton, number>;
 
     public initialize(): void {
-        this.waitForViewReady();
-        if (this.view.backButton) {
-            this.eventMap.mapListener(this.view.backButton, "click", this.backButton_onTriggeredHandler, this);
+        try {
+            // Set up back button immediately if available
+            if (this.view && this.view.backButton) {
+                this.eventMap.mapListener(this.view.backButton, "click", this.backButton_onTriggeredHandler, this);
+            }
+            
+            // Wait for view and dependencies to be ready before creating level buttons
+            this.waitForViewReady();
+        } catch (error) {
+            console.error("Error in LevelSelectViewMediator.initialize:", error);
         }
     }
     
     private waitForViewReady(attempts: number = 0): void {
-        const maxAttempts = 10;
+        const maxAttempts = 20; // Increased attempts for better reliability
         
-        if (this.view && typeof this.view.createLevelButton === 'function' && this.levelsRepository) {
-            // View and dependencies are ready, create buttons
-            this.createMapButtons();
-            return;
+        try {
+            // Check if all required dependencies are available
+            if (this.view && 
+                typeof this.view.createLevelButton === 'function' && 
+                this.levelsRepository &&
+                this.levelsRepository.getLevels) {
+                
+                // Additional check to ensure levels are actually loaded
+                const levels = this.levelsRepository.getLevels();
+                if (levels && levels.length > 0) {
+                    this.createMapButtons();
+                    return;
+                }
+            }
+            
+            if (attempts >= maxAttempts) {
+                console.warn("LevelSelectView not ready after maximum attempts - skipping button creation");
+                return;
+            }
+            
+            // Use setTimeout with shorter delay for more responsive checking
+            setTimeout(() => {
+                this.waitForViewReady(attempts + 1);
+            }, 50);
+        } catch (error) {
+            console.error("Error in waitForViewReady:", error);
+            if (attempts < maxAttempts) {
+                setTimeout(() => {
+                    this.waitForViewReady(attempts + 1);
+                }, 100);
+            }
         }
-        
-        if (attempts >= maxAttempts) {
-            console.warn("LevelSelectView not ready after maximum attempts - skipping button creation");
-            return;
-        }
-        
-        // Use requestAnimationFrame for better timing
-        requestAnimationFrame(() => {
-            this.waitForViewReady(attempts + 1);
-        });
     }
     public destroy(): void {
         this.eventMap.unmapListeners();

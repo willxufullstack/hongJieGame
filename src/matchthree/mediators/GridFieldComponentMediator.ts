@@ -38,9 +38,9 @@ export class GridFieldComponentMediator extends Mediator<GridFieldComponent> {
                 return;
             }
             
-            // LevelInfo should always be available now due to proper initialization order
+            // Wait for level creation before initializing
             if (!this.levelModel.levelInfo) {
-                console.error("GridFieldComponentMediator: LevelInfo not available - this should not happen");
+                this.eventMap.mapListener(this.eventDispatcher, GameEvent.CREATE_LEVEL_COMMAND, this.onLevelCreated, this);
                 return;
             }
             
