@@ -10,6 +10,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet">
     
+    <!-- Force font loading -->
+    <script>
+        // Ensure Nosifer font is loaded before game starts
+        document.fonts.ready.then(function() {
+            console.log('All fonts loaded including Nosifer');
+        });
+    </script>
+    
     <style>
         body {
             margin: 0;
@@ -33,10 +41,24 @@
             left: -9999px;
             visibility: hidden;
         }
+        
+        /* Test Nosifer font visibility */
+        .nosifer-test {
+            font-family: 'Nosifer', cursive;
+            color: red;
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
     <!-- Font preloader to ensure Nosifer is loaded -->
-    <div class="font-preload">红姐大魔王</div>
+    <div class="font-preload">Red Sister Big Devil</div>
+    
+    <!-- Test Nosifer font rendering -->
+    <div class="nosifer-test">Test Nosifer Font</div>
 </body>
 </html>

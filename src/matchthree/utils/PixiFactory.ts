@@ -22,7 +22,7 @@ export class PixiFactory {
         const style = new PIXI.TextStyle({
             fontFamily: hasChinese ? 
                 '"Microsoft YaHei", "SimHei", serif' :  // Chinese: use system fonts
-                'Nosifer, serif',  // English: use Nosifer dripping blood font
+                '"Nosifer", "Creepster", "Chiller", serif',  // English: use Nosifer dripping blood font
             fontSize: fontSize,
             fill: 0xFF0000,  // Bright blood red color
             align: 'center',

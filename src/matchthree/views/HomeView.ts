@@ -28,7 +28,7 @@ export class HomeView extends Container {
     }
     private createImages(): void {
         // English subtitle with Nosifer dripping blood font
-        const englishTitle = PixiFactory.getHorrorText("NOSIFER", 28);
+        const englishTitle = PixiFactory.getHorrorText("Red Sister Big Devil", 24);
         englishTitle.x = ViewPortSize.HALF_WIDTH;
         englishTitle.y = ViewPortSize.MAX_HEIGHT * 0.25;
         englishTitle.pivot.x = englishTitle.width * 0.5;
