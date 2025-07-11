@@ -28,7 +28,7 @@ export class YouWinPopupMediator extends Mediator<YouWinPopup> {
     }
     
     private waitForViewReady(attempts: number = 0): void {
-        const maxAttempts = 10;
+        const maxAttempts = 50; // Increase max attempts
         
         if (this.view && typeof this.view.createStars === 'function') {
             // View is ready, initialize it
@@ -37,14 +37,48 @@ export class YouWinPopupMediator extends Mediator<YouWinPopup> {
         }
         
         if (attempts >= maxAttempts) {
-            console.warn("YouWinPopup view not ready after maximum attempts - skipping initialization");
+            console.warn("YouWinPopup view not ready after maximum attempts - attempting direct initialization");
+            // Try direct initialization as fallback
+            this.initializeViewDirectly();
             return;
         }
         
-        // Use requestAnimationFrame for better timing
-        requestAnimationFrame(() => {
+        // Use setTimeout with longer delay for more reliable timing
+        setTimeout(() => {
             this.waitForViewReady(attempts + 1);
-        });
+        }, 50);
+    }
+    
+    private initializeViewDirectly(): void {
+        try {
+            // Skip the createStars method if it's not available and just setup buttons
+            console.log("Attempting direct initialization without createStars");
+            
+            if (!this.levelModel || !this.levelModel.levelInfo) {
+                console.error("LevelModel not available for direct initialization");
+                return;
+            }
+            
+            // Update values if possible
+            if (this.view && typeof this.view.updateValues === 'function') {
+                this.view.updateValues(String(this.levelModel.score), String(this.levelModel.levelInfo.hiScore));
+            }
+
+            // Setup button listeners
+            if (this.view && this.view.retryButton) {
+                this.eventMap.mapListener(this.view.retryButton, "click", this.retryButton_onTriggeredHandler, this);
+            }
+            if (this.view && this.view.levelSelectButton) {
+                this.eventMap.mapListener(
+                    this.view.levelSelectButton,
+                    "click",
+                    this.levelSelectButton_onTriggeredHandler,
+                    this
+                );
+            }
+        } catch (error) {
+            console.error("Error in YouWinPopupMediator.initializeViewDirectly:", error);
+        }
     }
     
     private initializeView(): void {
