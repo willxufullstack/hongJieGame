@@ -15,6 +15,32 @@ export class PixiFactory {
 
         return new PIXI.extras.BitmapText(text, style);
     }
+    public static getHorrorText(text: string, fontSize: number = MagicValues.SIZE_DEFAULT): Container {
+        const style = {
+            align: "center",
+            font: { name: MagicValues.FONT_FAMILY, size: fontSize },
+            tint: 0xFF0000  // Red color for horror effect
+        };
+
+        const horrorText = new PIXI.extras.BitmapText(text, style);
+        
+        // Add shadow effect for horror style
+        const shadow = new PIXI.extras.BitmapText(text, {
+            align: "center",
+            font: { name: MagicValues.FONT_FAMILY, size: fontSize },
+            tint: 0x000000  // Black shadow
+        });
+        
+        const container = new Container();
+        shadow.x = 2;
+        shadow.y = 2;
+        shadow.alpha = 0.7;
+        
+        container.addChild(shadow);
+        container.addChild(horrorText);
+        
+        return container;
+    }
     public static getTitle(label: string): Container {
         const style = {
             align: "center",

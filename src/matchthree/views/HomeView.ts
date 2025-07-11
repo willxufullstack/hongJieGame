@@ -27,8 +27,8 @@ export class HomeView extends Container {
         this.addChild(PixiFactory.getBackground());
     }
     private createImages(): void {
-        // Replace image logo with text logo "HongJie DaMoWang"
-        const logo = PixiFactory.getText("HongJie DaMoWang", 32);
+        // Chinese horror title with red color and shadow effect
+        const logo = PixiFactory.getHorrorText("HongJie DaMoWang", 36);
         logo.x = ViewPortSize.HALF_WIDTH;
         logo.y = ViewPortSize.MAX_HEIGHT * 0.3;
         logo.pivot.x = logo.width * 0.5;
