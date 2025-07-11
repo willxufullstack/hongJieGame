@@ -9,8 +9,12 @@ export class OptionsViewMediator extends Mediator<OptionsView> {
     @inject(FlowService) private flowService: FlowService;
 
     public initialize(): void {
-        this.eventMap.mapListener(this.view.backButton, "click", this.backButton_onClick, this);
-        this.eventMap.mapListener(this.view.deleteButton, "click", this.deleteButton_onClick, this);
+        if (this.view.backButton) {
+            this.eventMap.mapListener(this.view.backButton, "click", this.backButton_onClick, this);
+        }
+        if (this.view.deleteButton) {
+            this.eventMap.mapListener(this.view.deleteButton, "click", this.deleteButton_onClick, this);
+        }
     }
     public destroy(): void {
         this.eventMap.unmapListeners();

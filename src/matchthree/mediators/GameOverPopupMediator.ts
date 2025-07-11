@@ -11,13 +11,17 @@ export class GameOverPopupMediator extends Mediator<GameOverPopup> {
     @inject(GameService) private gameService: GameService;
 
     public initialize(): void {
-        this.eventMap.mapListener(this.view.retryButton, "click", this.retryButton_onTriggeredHandler, this);
-        this.eventMap.mapListener(
-            this.view.levelSelectButton,
-            "click",
-            this.levelSelectButton_onTriggeredHandler,
-            this
-        );
+        if (this.view.retryButton) {
+            this.eventMap.mapListener(this.view.retryButton, "click", this.retryButton_onTriggeredHandler, this);
+        }
+        if (this.view.levelSelectButton) {
+            this.eventMap.mapListener(
+                this.view.levelSelectButton,
+                "click",
+                this.levelSelectButton_onTriggeredHandler,
+                this
+            );
+        }
     }
     public destroy(): void {
         this.eventMap.unmapListeners();

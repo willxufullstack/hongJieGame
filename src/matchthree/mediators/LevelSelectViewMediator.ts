@@ -20,7 +20,9 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
 
     public initialize(): void {
         this.createMapButtons();
-        this.eventMap.mapListener(this.view.backButton, "click", this.backButton_onTriggeredHandler, this);
+        if (this.view.backButton) {
+            this.eventMap.mapListener(this.view.backButton, "click", this.backButton_onTriggeredHandler, this);
+        }
     }
     public destroy(): void {
         this.eventMap.unmapListeners();

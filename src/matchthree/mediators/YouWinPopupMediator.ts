@@ -16,13 +16,17 @@ export class YouWinPopupMediator extends Mediator<YouWinPopup> {
         this.view.createStars(this.levelModel.numStars);
         this.view.updateValues(String(this.levelModel.score), String(this.levelModel.levelInfo.hiScore));
 
-        this.eventMap.mapListener(this.view.retryButton, "click", this.retryButton_onTriggeredHandler, this);
-        this.eventMap.mapListener(
-            this.view.levelSelectButton,
-            "click",
-            this.levelSelectButton_onTriggeredHandler,
-            this
-        );
+        if (this.view.retryButton) {
+            this.eventMap.mapListener(this.view.retryButton, "click", this.retryButton_onTriggeredHandler, this);
+        }
+        if (this.view.levelSelectButton) {
+            this.eventMap.mapListener(
+                this.view.levelSelectButton,
+                "click",
+                this.levelSelectButton_onTriggeredHandler,
+                this
+            );
+        }
     }
     public destroy(): void {
         this.eventMap.unmapListeners();

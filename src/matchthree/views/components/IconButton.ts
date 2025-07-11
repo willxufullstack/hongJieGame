@@ -23,9 +23,14 @@ export class IconButton extends Sprite {
         const downStateTexture: Texture = AtlasKeys.getTexture(shapeType + "_down.png");
         const upStateTexture: Texture = AtlasKeys.getTexture(shapeType + "_up.png");
 
-        this._downState = downStateTexture;
-        this._overState = downStateTexture;
-        this._upState = upStateTexture;
+        // Validate textures exist
+        if (!upStateTexture || !downStateTexture) {
+            console.warn(`Missing textures for button type: ${shapeType}`);
+        }
+
+        this._downState = downStateTexture || upTexture;
+        this._overState = downStateTexture || upTexture;
+        this._upState = upStateTexture || upTexture;
 
         this.setInitialValues();
         this.setupInteractions();

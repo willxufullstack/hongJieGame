@@ -35,9 +35,16 @@ export class PixiFactory {
         return title;
     }
     public static getIconButton(icon: string, shapeType: string = IconButton.TYPE_SMALL): IconButton {
-        const button: IconButton = new IconButton(shapeType);
-        button.setIco(icon);
-        return button;
+        try {
+            const button: IconButton = new IconButton(shapeType);
+            if (button) {
+                button.setIco(icon);
+                return button;
+            }
+        } catch (error) {
+            console.error(`Failed to create IconButton with shapeType: ${shapeType}, icon: ${icon}`, error);
+        }
+        return null;
     }
     public static getImage(atlasKey: string): Sprite {
         const texture: Texture = AtlasKeys.getTexture(atlasKey);
