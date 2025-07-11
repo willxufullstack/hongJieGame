@@ -55,7 +55,9 @@ export class YouWinPopupMediator extends Mediator<YouWinPopup> {
             console.log("Attempting direct initialization without createStars");
             
             if (!this.levelModel || !this.levelModel.levelInfo) {
-                console.error("LevelModel not available for direct initialization");
+                console.warn("LevelModel not available for direct initialization - setting up buttons only");
+                // Just setup buttons without updating values
+                this.setupButtonsOnly();
                 return;
             }
             
@@ -65,6 +67,15 @@ export class YouWinPopupMediator extends Mediator<YouWinPopup> {
             }
 
             // Setup button listeners
+            this.setupButtonsOnly();
+        } catch (error) {
+            console.error("Error in YouWinPopupMediator.initializeViewDirectly:", error);
+        }
+    }
+    
+    private setupButtonsOnly(): void {
+        try {
+            // Setup button listeners even if LevelModel is not available
             if (this.view && this.view.retryButton) {
                 this.eventMap.mapListener(this.view.retryButton, "click", this.retryButton_onTriggeredHandler, this);
             }
@@ -76,8 +87,9 @@ export class YouWinPopupMediator extends Mediator<YouWinPopup> {
                     this
                 );
             }
+            console.log("YouWinPopup buttons setup completed");
         } catch (error) {
-            console.error("Error in YouWinPopupMediator.initializeViewDirectly:", error);
+            console.error("Error setting up YouWinPopup buttons:", error);
         }
     }
     
