@@ -10,9 +10,9 @@
   "packageManager": "npm@8.0.0",
   "scripts": {
     "autoformat": "prettier --config .prettierrc --write {src,test}/**/*.ts",
-    "start": "webpack-dev-server --config ./webpack.hongJie.config.js",
-    "build": "NODE_ENV=production webpack --config ./webpack.hongJie.config.js -p",
-    "vercel-build": "npm install --legacy-peer-deps && npm run build",
+    "start": "./node_modules/.bin/webpack-dev-server --config ./webpack.hongJie.config.js",
+    "build": "NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack.hongJie.config.js -p",
+    "vercel-build": "npm run build",
     "clean": "rimraf coverage",
     "lint": "tslint-config-prettier-check ./tslint.json",
     "prepush": "npm run clean && npm run autoformat && npm run lint",
