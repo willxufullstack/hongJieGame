@@ -16,26 +16,36 @@ export class PixiFactory {
         return new PIXI.extras.BitmapText(text, style);
     }
     public static getHorrorText(text: string, fontSize: number = MagicValues.SIZE_DEFAULT): Container {
-        const style = {
-            align: "center",
-            font: { name: MagicValues.FONT_FAMILY, size: fontSize },
-            tint: 0xCC0000  // Dark red color for horror effect
-        };
+        // Use system font for Chinese characters support
+        const style = new PIXI.TextStyle({
+            fontFamily: 'Arial, "Microsoft YaHei", "SimHei", sans-serif',
+            fontSize: fontSize,
+            fill: 0xCC0000,  // Dark red color for horror effect
+            align: 'center',
+            fontWeight: 'bold'
+        });
 
-        const horrorText = new PIXI.extras.BitmapText(text, style);
+        const horrorText = new PIXI.Text(text, style);
         
         // Add multiple shadow layers for more dramatic effect
-        const shadow1 = new PIXI.extras.BitmapText(text, {
-            align: "center",
-            font: { name: MagicValues.FONT_FAMILY, size: fontSize },
-            tint: 0x000000  // Black shadow
+        const shadowStyle1 = new PIXI.TextStyle({
+            fontFamily: 'Arial, "Microsoft YaHei", "SimHei", sans-serif',
+            fontSize: fontSize,
+            fill: 0x000000,  // Black shadow
+            align: 'center',
+            fontWeight: 'bold'
         });
         
-        const shadow2 = new PIXI.extras.BitmapText(text, {
-            align: "center",
-            font: { name: MagicValues.FONT_FAMILY, size: fontSize },
-            tint: 0x440000  // Dark red shadow
+        const shadowStyle2 = new PIXI.TextStyle({
+            fontFamily: 'Arial, "Microsoft YaHei", "SimHei", sans-serif',
+            fontSize: fontSize,
+            fill: 0x440000,  // Dark red shadow
+            align: 'center',
+            fontWeight: 'bold'
         });
+        
+        const shadow1 = new PIXI.Text(text, shadowStyle1);
+        const shadow2 = new PIXI.Text(text, shadowStyle2);
         
         const container = new Container();
         
