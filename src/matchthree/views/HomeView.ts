@@ -41,9 +41,7 @@ export class HomeView extends Container {
         const chineseLogo = PixiFactory.getHorrorText(chineseTitle, 36);
         chineseLogo.x = ViewPortSize.HALF_WIDTH;
         chineseLogo.y = ViewPortSize.MAX_HEIGHT * 0.32;
-        // Center the container properly
-        chineseLogo.pivot.x = chineseLogo.getBounds().width * 0.5;
-        chineseLogo.pivot.y = chineseLogo.getBounds().height * 0.5;
+        // Chinese text should be centered automatically by the renderer
         this.addChild(chineseLogo);
 
         // Original image logo commented out
