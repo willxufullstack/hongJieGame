@@ -41,14 +41,9 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
     
     private canCreateButtons(): boolean {
         try {
-            // Comprehensive dependency check
+            // Basic dependency check - less strict for Netlify compatibility
             if (!this.view) {
                 console.log("LevelSelectView: view not available");
-                return false;
-            }
-            
-            if (typeof this.view.createLevelButton !== 'function') {
-                console.log("LevelSelectView: createLevelButton method not available");
                 return false;
             }
             
@@ -57,19 +52,19 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
                 return false;
             }
             
-            if (typeof this.levelsRepository.getLevels !== 'function') {
-                console.log("LevelSelectView: getLevels method not available");
+            // Check if getLevels method exists and returns data
+            try {
+                const levels = this.levelsRepository.getLevels();
+                if (!levels || levels.length === 0) {
+                    console.log("LevelSelectView: levels array is empty or null");
+                    return false;
+                }
+                console.log(`LevelSelectView: Dependencies ready, ${levels.length} levels available`);
+                return true;
+            } catch (levelsError) {
+                console.log("LevelSelectView: Error getting levels:", levelsError);
                 return false;
             }
-            
-            const levels = this.levelsRepository.getLevels();
-            if (!levels || levels.length === 0) {
-                console.log("LevelSelectView: levels array is empty or null");
-                return false;
-            }
-            
-            console.log(`LevelSelectView: All dependencies ready, ${levels.length} levels available`);
-            return true;
         } catch (error) {
             console.error("Error in canCreateButtons:", error);
             return false;
@@ -146,7 +141,20 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
 
             for (let i = 0; i < levels.length; i++) {
                 levelInfo = levels[i];
-                levelButton = this.view.createLevelButton(String(levelInfo.levelId + 1));
+                
+                // Safe button creation with fallback
+                try {
+                    if (this.view && typeof this.view.createLevelButton === 'function') {
+                        levelButton = this.view.createLevelButton(String(levelInfo.levelId + 1));
+                    } else {
+                        console.warn("createLevelButton method not available, using fallback");
+                        levelButton = null;
+                    }
+                } catch (buttonError) {
+                    console.warn("Error creating button, using fallback:", buttonError);
+                    levelButton = null;
+                }
+                
                 if (levelButton) {
                     levelButton.x =
                         ViewPortSize.HALF_WIDTH - (levelButton.width + 4) + Math.floor(i % 3) * (levelButton.width + 4);
@@ -157,7 +165,7 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
                     this.eventMap.mapListener(levelButton, "click", this.levelButton_onTriggeredHandler, this);
                     console.log(`Created level button ${i + 1}`);
                 } else {
-                    console.warn(`Failed to create level button for level ${i}`);
+                    console.warn(`Failed to create level button for level ${i}, skipping`);
                 }
             }
             console.log("Level buttons creation completed");
