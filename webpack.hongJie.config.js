@@ -3,6 +3,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (function (options) {
+  const isProduction = process.env.NODE_ENV === 'production';
+  
   return {
     entry: {
       main: path.resolve("src/index.ts")
@@ -13,7 +15,7 @@ module.exports = (function (options) {
       filename: "bundle.js"
     },
 
-    devtool: 'source-map',
+    devtool: isProduction ? false : 'source-map',
 
     module: {
       rules: [{
