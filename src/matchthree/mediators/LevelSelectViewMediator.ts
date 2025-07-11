@@ -25,8 +25,13 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
                 this.eventMap.mapListener(this.view.backButton, "click", this.backButton_onTriggeredHandler, this);
             }
             
-            // Listen for assets loaded event
+            // Listen for assets loaded event and check global flag
             this.eventMap.mapListener(this.eventDispatcher, 'ASSETS_LOADED', this.onAssetsLoaded, this);
+            
+            // Also check if assets are already loaded
+            if ((window as any).ASSETS_LOADED) {
+                setTimeout(() => this.onAssetsLoaded(), 100);
+            }
             
             // Try immediate initialization first
             if (this.canCreateButtons()) {

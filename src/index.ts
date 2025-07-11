@@ -79,22 +79,22 @@ class Main {
         // Texture loading completed - notify the system
         console.log("Assets loaded successfully");
         
-        // Update AtlasKeys with loaded textures
-        if (typeof AtlasKeys.update === 'function') {
-            AtlasKeys.update(PIXI.utils.TextureCache);
-        }
-        
         // Dispatch event to notify views that assets are ready
         if (this.context && this.context.injector) {
             try {
                 const eventDispatcher = this.context.injector.get(IEventDispatcher);
-                if (eventDispatcher) {
-                    eventDispatcher.dispatchEvent(new Event('ASSETS_LOADED'));
+                if (eventDispatcher && typeof eventDispatcher.dispatchEvent === 'function') {
+                    // Create a simple event object
+                    const assetsLoadedEvent = { type: 'ASSETS_LOADED' };
+                    (eventDispatcher as any).dispatchEventWith('ASSETS_LOADED');
                 }
             } catch (e) {
                 console.log("Could not dispatch ASSETS_LOADED event:", e);
             }
         }
+        
+        // Set a global flag that assets are loaded
+        (window as any).ASSETS_LOADED = true;
     }
     public render = () => {
         this.renderer.render(this.stage);
