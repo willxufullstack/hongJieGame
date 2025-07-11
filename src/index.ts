@@ -39,7 +39,13 @@ class Main {
             .add(AtlasKeys.BG_POPUP_IMAGE)
             .load(this.onLoad);
 
-        document.body.appendChild(this.renderer.view);
+        // Center the canvas in the page
+        const canvas = this.renderer.view;
+        canvas.style.position = 'absolute';
+        canvas.style.left = '50%';
+        canvas.style.top = '50%';
+        canvas.style.transform = 'translate(-50%, -50%)';
+        document.body.appendChild(canvas);
     }
     public onLoad(): void {
         AtlasKeys.update(PIXI.utils.TextureCache);
