@@ -17,6 +17,10 @@ export class LevelSelectView extends Container {
     constructor() {
         super();
 
+        this.createComponents();
+    }
+
+    public createComponents(): void {
         this.createBackground();
         this.createText();
         this.createButton();

@@ -9,6 +9,10 @@ export class IntroView extends Container {
     constructor() {
         super();
 
+        this.createComponents();
+    }
+
+    public createComponents(): void {
         this.setupBackground();
         this.setupImages();
         this.setupText();

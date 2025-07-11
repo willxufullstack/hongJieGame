@@ -20,6 +20,10 @@ export class OptionsView extends Container {
     constructor() {
         super();
 
+        this.createComponents();
+    }
+
+    public createComponents(): void {
         this.createBackgrounds();
         this.createTexts();
         this.createButtons();
