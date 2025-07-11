@@ -19,24 +19,37 @@ export class PixiFactory {
         const style = {
             align: "center",
             font: { name: MagicValues.FONT_FAMILY, size: fontSize },
-            tint: 0xFF0000  // Red color for horror effect
+            tint: 0xCC0000  // Dark red color for horror effect
         };
 
         const horrorText = new PIXI.extras.BitmapText(text, style);
         
-        // Add shadow effect for horror style
-        const shadow = new PIXI.extras.BitmapText(text, {
+        // Add multiple shadow layers for more dramatic effect
+        const shadow1 = new PIXI.extras.BitmapText(text, {
             align: "center",
             font: { name: MagicValues.FONT_FAMILY, size: fontSize },
             tint: 0x000000  // Black shadow
         });
         
-        const container = new Container();
-        shadow.x = 2;
-        shadow.y = 2;
-        shadow.alpha = 0.7;
+        const shadow2 = new PIXI.extras.BitmapText(text, {
+            align: "center",
+            font: { name: MagicValues.FONT_FAMILY, size: fontSize },
+            tint: 0x440000  // Dark red shadow
+        });
         
-        container.addChild(shadow);
+        const container = new Container();
+        
+        // Multiple shadow layers for depth
+        shadow2.x = 4;
+        shadow2.y = 4;
+        shadow2.alpha = 0.5;
+        
+        shadow1.x = 2;
+        shadow1.y = 2;
+        shadow1.alpha = 0.8;
+        
+        container.addChild(shadow2);
+        container.addChild(shadow1);
         container.addChild(horrorText);
         
         return container;
@@ -68,6 +81,8 @@ export class PixiFactory {
         // Scale the background to fit the game viewport
         background.width = ViewPortSize.MAX_WIDTH;
         background.height = ViewPortSize.MAX_HEIGHT;
+        // Add horror tint - darker and more ominous
+        background.tint = 0x888888; // Darker tint for horror atmosphere
         return background;
     }
     public static getColorBackground(color = 0x000000): Graphics {

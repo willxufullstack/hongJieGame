@@ -3,6 +3,12 @@ export class MagicValues {
     public static FONT_FAMILY = "BerlinSansFBDemi";
 
     public static SHARED_OBJECT_NAME = "HongJieGame";
+    
+    /* HORROR THEME COLORS */
+    public static HORROR_RED = 0xCC0000;
+    public static HORROR_DARK_RED = 0x440000;
+    public static HORROR_BLACK = 0x000000;
+    public static HORROR_BACKGROUND_TINT = 0x888888;
 
     public static SIZE_TITLE = 42;
     public static SIZE_DEFAULT = 32;
