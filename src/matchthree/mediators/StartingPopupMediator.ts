@@ -28,6 +28,15 @@ export class StartingPopupMediator extends Mediator<StartingPopup> {
                     this.tick(this);
                 } else {
                     console.error("StartingPopup.changeNumber method not available after initialization delay");
+                    // Try again with a longer delay
+                    setTimeout(() => {
+                        if (this.view && typeof this.view.changeNumber === 'function') {
+                            this.tick(this);
+                        } else {
+                            console.error("StartingPopup.changeNumber method still not available - skipping countdown");
+                            this.tick_onComplete();
+                        }
+                    }, 50);
                 }
             }, 10);
         } catch (error) {

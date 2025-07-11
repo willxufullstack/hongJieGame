@@ -20,8 +20,19 @@ export class YouWinPopupMediator extends Mediator<YouWinPopup> {
                 return;
             }
             
-            if (typeof this.view.createStars !== 'function') {
-                console.error("YouWinPopup.createStars method not available");
+            // Use setTimeout to ensure view is fully constructed before accessing methods
+            setTimeout(() => {
+                this.initializeView();
+            }, 10);
+        } catch (error) {
+            console.error("Error in YouWinPopupMediator.initialize:", error);
+        }
+    }
+    
+    private initializeView(): void {
+        try {
+            if (!this.view || typeof this.view.createStars !== 'function') {
+                console.error("YouWinPopup.createStars method not available after initialization delay");
                 return;
             }
             
@@ -55,7 +66,7 @@ export class YouWinPopupMediator extends Mediator<YouWinPopup> {
                 );
             }
         } catch (error) {
-            console.error("Error in YouWinPopupMediator.initialize:", error);
+            console.error("Error in YouWinPopupMediator.initializeView:", error);
         }
     }
     public destroy(): void {
