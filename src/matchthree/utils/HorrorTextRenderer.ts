@@ -33,7 +33,7 @@ export class HorrorTextRenderer {
         });
         
         const textElement = new Text(text, style);
-        textElement.anchor.set(0.5);
+        // Don't anchor here, let the parent handle centering
         container.addChild(textElement);
         
         // Add blood drip effects around Chinese text
@@ -61,8 +61,7 @@ export class HorrorTextRenderer {
             totalWidth += letterSpacing;
         });
         
-        // Center the entire text
-        container.pivot.x = totalWidth * 0.5;
+        // Don't set pivot here, let the parent handle centering
         
         return container;
     }

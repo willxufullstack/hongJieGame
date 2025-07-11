@@ -27,31 +27,23 @@ export class HomeView extends Container {
         this.addChild(PixiFactory.getBackground());
     }
     private createImages(): void {
-        // Calculate responsive font sizes based on viewport
-        const maxWidth = ViewPortSize.MAX_WIDTH - 40; // 20px margin on each side
-        
-        // English subtitle - smaller and more compact
-        const englishTitle = PixiFactory.getHorrorText("Red Sister Big Devil", 16);
+        // English subtitle with proper centering
+        const englishTitle = PixiFactory.getHorrorText("Red Sister Big Devil", 24);
         englishTitle.x = ViewPortSize.HALF_WIDTH;
-        englishTitle.y = ViewPortSize.MAX_HEIGHT * 0.22; // Higher position
-        
-        // Check if English text exceeds screen width and scale down if needed
-        if (englishTitle.width > maxWidth) {
-            const scale = maxWidth / englishTitle.width;
-            englishTitle.scale.set(scale);
-        }
-        
-        englishTitle.pivot.x = englishTitle.width * 0.5;
-        englishTitle.pivot.y = englishTitle.height * 0.5;
+        englishTitle.y = ViewPortSize.MAX_HEIGHT * 0.22;
+        // Center the container properly
+        englishTitle.pivot.x = englishTitle.getBounds().width * 0.5;
+        englishTitle.pivot.y = englishTitle.getBounds().height * 0.5;
         this.addChild(englishTitle);
 
-        // Chinese main title - larger and prominent
+        // Chinese main title with proper centering
         const chineseTitle = "\u7EA2\u59D0\u5927\u9B54\u738B"; // Unicode for 红姐大魔王
         const chineseLogo = PixiFactory.getHorrorText(chineseTitle, 36);
         chineseLogo.x = ViewPortSize.HALF_WIDTH;
-        chineseLogo.y = ViewPortSize.MAX_HEIGHT * 0.32; // Closer to English title
-        chineseLogo.pivot.x = chineseLogo.width * 0.5;
-        chineseLogo.pivot.y = chineseLogo.height * 0.5;
+        chineseLogo.y = ViewPortSize.MAX_HEIGHT * 0.32;
+        // Center the container properly
+        chineseLogo.pivot.x = chineseLogo.getBounds().width * 0.5;
+        chineseLogo.pivot.y = chineseLogo.getBounds().height * 0.5;
         this.addChild(chineseLogo);
 
         // Original image logo commented out
