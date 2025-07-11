@@ -80,5 +80,10 @@ export class IconButton extends Sprite {
         this.scale.set(1, 1);
 
         this.texture = this._isOver ? this._overState : this._upState;
+        
+        // Emit click event for compatibility with mediators
+        if (this._isOver) {
+            this.emit('click');
+        }
     }
 }
