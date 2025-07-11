@@ -4,7 +4,7 @@ import { IconButton } from "./IconButton";
 
 export class LevelSelectButton extends IconButton {
     constructor() {
-        super();
+        super(IconButton.TYPE_SMALL);
     }
 
     public setText(text: string): void {

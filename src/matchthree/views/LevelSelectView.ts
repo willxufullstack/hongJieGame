@@ -27,10 +27,13 @@ export class LevelSelectView extends Container {
     }
     public createLevelButton(text: string): LevelSelectButton {
         const level: LevelSelectButton = PixiFactory.getLevelSelectButton();
-        level.setText(text);
-        this.addChild(level);
-
-        return level;
+        if (level) {
+            level.setText(text);
+            this.addChild(level);
+            return level;
+        }
+        console.warn("Failed to create level button");
+        return null;
     }
     private createBackground(): void {
         this.addChild(PixiFactory.getBackground());

@@ -84,6 +84,12 @@ export class PixiFactory {
         return bg;
     }
     public static getLevelSelectButton(): LevelSelectButton {
-        return new LevelSelectButton();
+        try {
+            const button = new LevelSelectButton();
+            return button;
+        } catch (error) {
+            console.error("Failed to create LevelSelectButton", error);
+            return null;
+        }
     }
 }

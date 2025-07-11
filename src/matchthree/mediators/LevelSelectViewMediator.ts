@@ -36,13 +36,15 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
         for (let i = 0; i < levels.length; i++) {
             levelInfo = levels[i];
             levelButton = this.view.createLevelButton(String(levelInfo.levelId + 1));
-            levelButton.x =
-                ViewPortSize.HALF_WIDTH - (levelButton.width + 4) + Math.floor(i % 3) * (levelButton.width + 4);
-            levelButton.y = 180 + Math.floor(i / 3) * (levelButton.height + 8);
-            levelButton.setStars(ScoreUtils.getNumStars(levelInfo.hiScore, levelInfo.scoreStarts));
-            levelButton.anchor.set(0.5);
-            this.levelsIds.set(levelButton, levels[i].levelId);
-            this.eventMap.mapListener(levelButton, "click", this.levelButton_onTriggeredHandler, this);
+            if (levelButton) {
+                levelButton.x =
+                    ViewPortSize.HALF_WIDTH - (levelButton.width + 4) + Math.floor(i % 3) * (levelButton.width + 4);
+                levelButton.y = 180 + Math.floor(i / 3) * (levelButton.height + 8);
+                levelButton.setStars(ScoreUtils.getNumStars(levelInfo.hiScore, levelInfo.scoreStarts));
+                levelButton.anchor.set(0.5);
+                this.levelsIds.set(levelButton, levels[i].levelId);
+                this.eventMap.mapListener(levelButton, "click", this.levelButton_onTriggeredHandler, this);
+            }
         }
     }
     private backButton_onTriggeredHandler(e: any): void {
