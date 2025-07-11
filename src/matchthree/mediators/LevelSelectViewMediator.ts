@@ -201,7 +201,7 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
                         if (typeof levelButton.setStars === 'function') {
                             levelButton.setStars(0);
                         }
-                        if (typeof levelButton.anchor?.set === 'function') {
+                        if (levelButton.anchor && typeof levelButton.anchor.set === 'function') {
                             levelButton.anchor.set(0.5);
                         }
                         
