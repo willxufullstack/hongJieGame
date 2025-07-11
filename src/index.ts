@@ -37,6 +37,26 @@ class Main {
             .add(AtlasKeys.BG_HUD_IMAGE)
             .add(AtlasKeys.BG_IMAGE)
             .add(AtlasKeys.BG_POPUP_IMAGE)
+            // Load new game piece images
+            .add("piece_normal_1", AtlasKeys.GAME_PIECES_PATH + "piece_normal_1.png")
+            .add("piece_normal_2", AtlasKeys.GAME_PIECES_PATH + "piece_normal_2.png")
+            .add("piece_normal_3", AtlasKeys.GAME_PIECES_PATH + "piece_normal_3.png")
+            .add("piece_normal_4", AtlasKeys.GAME_PIECES_PATH + "piece_normal_4.png")
+            .add("piece_normal_5", AtlasKeys.GAME_PIECES_PATH + "piece_normal_5.png")
+            .add("piece_normal_6", AtlasKeys.GAME_PIECES_PATH + "piece_normal_6.png")
+            .add("piece_row_1", AtlasKeys.GAME_PIECES_PATH + "piece_row_1.png")
+            .add("piece_row_2", AtlasKeys.GAME_PIECES_PATH + "piece_row_2.png")
+            .add("piece_row_3", AtlasKeys.GAME_PIECES_PATH + "piece_row_3.png")
+            .add("piece_row_4", AtlasKeys.GAME_PIECES_PATH + "piece_row_4.png")
+            .add("piece_row_5", AtlasKeys.GAME_PIECES_PATH + "piece_row_5.png")
+            .add("piece_row_6", AtlasKeys.GAME_PIECES_PATH + "piece_row_6.png")
+            .add("piece_col_1", AtlasKeys.GAME_PIECES_PATH + "piece_col_1.png")
+            .add("piece_col_2", AtlasKeys.GAME_PIECES_PATH + "piece_col_2.png")
+            .add("piece_col_3", AtlasKeys.GAME_PIECES_PATH + "piece_col_3.png")
+            .add("piece_col_4", AtlasKeys.GAME_PIECES_PATH + "piece_col_4.png")
+            .add("piece_col_5", AtlasKeys.GAME_PIECES_PATH + "piece_col_5.png")
+            .add("piece_col_6", AtlasKeys.GAME_PIECES_PATH + "piece_col_6.png")
+            .add("piece_rainbow", AtlasKeys.GAME_PIECES_PATH + "piece_rainbow.png")
             .load(this.onLoad);
 
         // Center the canvas in the page

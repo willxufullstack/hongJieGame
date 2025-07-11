@@ -53,6 +53,11 @@ export class AtlasKeys {
         this.textureCache = textureCache;
     }
     public static getTexture(atlasKey): Texture {
+        // Check if it's a new game piece first
+        if (PIXI.loader.resources[atlasKey]) {
+            return PIXI.loader.resources[atlasKey].texture;
+        }
+        // Fallback to atlas texture cache
         return this.textureCache[atlasKey];
     }
 }

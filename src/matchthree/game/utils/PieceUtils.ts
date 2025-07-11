@@ -56,11 +56,12 @@ export class PieceUtils {
         }
     }
     public static getAssetId(pieceId: number, pieceType: string): string {
+        // Use new game piece resource names instead of atlas keys
         const preFix: Map<string, string> = new Map<string, string>();
-        preFix.set(PieceType.RAINBOW, AtlasKeys.PIECE_RAINBOW + ".png");
-        preFix.set(PieceType.NORMAL, AtlasKeys.PIECE_NORMAL + "_" + pieceId + ".png");
-        preFix.set(PieceType.ROW, AtlasKeys.PIECE_ROW + "_" + pieceId + ".png");
-        preFix.set(PieceType.COL, AtlasKeys.PIECE_COL + "_" + pieceId + ".png");
+        preFix.set(PieceType.RAINBOW, "piece_rainbow");
+        preFix.set(PieceType.NORMAL, "piece_normal_" + pieceId);
+        preFix.set(PieceType.ROW, "piece_row_" + pieceId);
+        preFix.set(PieceType.COL, "piece_col_" + pieceId);
 
         return preFix.get(pieceType);
     }
