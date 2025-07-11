@@ -9,7 +9,7 @@
     "preserveConstEnums": true,
     "target": "es2015",
     "lib": ["es6", "dom"],
-    "types": ["reflect-metadata", "mocha"],
+    "types": ["reflect-metadata"],
     "declaration": true,
     "moduleResolution": "node",
     "sourceMap": true,
