@@ -11,6 +11,12 @@ export class OptionsViewMediator extends Mediator<OptionsView> {
     public initialize(): void {
         this.eventMap.mapListener(this.view.backButton, "click", this.backButton_onClick, this);
         this.eventMap.mapListener(this.view.deleteButton, "click", this.deleteButton_onClick, this);
+        
+        // Add mobile touch support
+        this.eventMap.mapListener(this.view.backButton, "touchend", this.backButton_onClick, this);
+        this.eventMap.mapListener(this.view.deleteButton, "touchend", this.deleteButton_onClick, this);
+        this.eventMap.mapListener(this.view.backButton, "pointerup", this.backButton_onClick, this);
+        this.eventMap.mapListener(this.view.deleteButton, "pointerup", this.deleteButton_onClick, this);
     }
     public destroy(): void {
         this.eventMap.unmapListeners();

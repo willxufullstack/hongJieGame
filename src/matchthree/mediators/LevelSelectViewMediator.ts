@@ -21,6 +21,9 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
     public initialize(): void {
         this.createMapButtons();
         this.eventMap.mapListener(this.view.backButton, "click", this.backButton_onTriggeredHandler, this);
+        // Add mobile touch event support for back button
+        this.eventMap.mapListener(this.view.backButton, "touchend", this.backButton_onTriggeredHandler, this);
+        this.eventMap.mapListener(this.view.backButton, "pointerup", this.backButton_onTriggeredHandler, this);
     }
     public destroy(): void {
         this.eventMap.unmapListeners();
@@ -41,6 +44,10 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
             levelButton.anchor.set(0.5);
             this.levelsIds.set(levelButton, levels[i].levelId);
             this.eventMap.mapListener(levelButton, "click", this.levelButton_onTriggeredHandler, this);
+            // Add mobile touch event support
+            this.eventMap.mapListener(levelButton, "touchend", this.levelButton_onTriggeredHandler, this);
+            // Add pointer events for modern browsers
+            this.eventMap.mapListener(levelButton, "pointerup", this.levelButton_onTriggeredHandler, this);
         }
     }
     private backButton_onTriggeredHandler(e: any): void {

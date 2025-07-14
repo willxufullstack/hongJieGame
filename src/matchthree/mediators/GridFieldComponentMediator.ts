@@ -34,6 +34,14 @@ export class GridFieldComponentMediator extends Mediator<GridFieldComponent> {
 
         this.eventMap.mapListener(this.view, "mousedown", this.view_onSelectPiecesHandler, this);
         this.eventMap.mapListener(this.view, "mouseup", this.view_onSelectPiecesHandler, this);
+        
+        // Add mobile touch support for game grid
+        this.eventMap.mapListener(this.view, "touchstart", this.view_onSelectPiecesHandler, this);
+        this.eventMap.mapListener(this.view, "touchend", this.view_onSelectPiecesHandler, this);
+        
+        // Add pointer events for modern browsers
+        this.eventMap.mapListener(this.view, "pointerdown", this.view_onSelectPiecesHandler, this);
+        this.eventMap.mapListener(this.view, "pointerup", this.view_onSelectPiecesHandler, this);
 
         this.gameManager.nextStep();
     }
@@ -105,10 +113,21 @@ export class GridFieldComponentMediator extends Mediator<GridFieldComponent> {
             return;
         }
 
-        if (e.type === TouchPhase.BEGAN || e.type === TouchPhase.ENDED) {
+        // Map different event types to touch phases
+        let touchPhase;
+        if (e.type === "mousedown" || e.type === "touchstart" || e.type === "pointerdown") {
+            touchPhase = TouchPhase.BEGAN;
+        } else if (e.type === "mouseup" || e.type === "touchend" || e.type === "pointerup") {
+            touchPhase = TouchPhase.ENDED;
+        } else if (e.type === TouchPhase.BEGAN || e.type === TouchPhase.ENDED) {
+            touchPhase = e.type;
+        } else {
+            return;
+        }
+        
+        if (touchPhase === TouchPhase.BEGAN || touchPhase === TouchPhase.ENDED) {
             let col;
             let row;
-            const touchPhase = e.type;
             if (touchPhase === TouchPhase.BEGAN) {
                 col = Math.floor((e.data.global.x - (this.view.x - Tile.TILE_WIDTH * 0.5)) / Tile.TILE_WIDTH);
                 row = Math.floor((e.data.global.y - (this.view.y - Tile.TILE_HEIGHT * 0.5)) / Tile.TILE_HEIGHT);

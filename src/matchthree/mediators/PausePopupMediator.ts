@@ -14,6 +14,14 @@ export class PausePopupMediator extends Mediator<PausePopup> {
         this.eventMap.mapListener(this.view.levelSelectButton, "click", this.levelSelectButton_onClick, this);
         this.eventMap.mapListener(this.view.resumeButton, "click", this.resumeButton_onClick, this);
         this.eventMap.mapListener(this.view.retryButton, "click", this.retryButton_onClick, this);
+        
+        // Add mobile touch support
+        this.eventMap.mapListener(this.view.levelSelectButton, "touchend", this.levelSelectButton_onClick, this);
+        this.eventMap.mapListener(this.view.resumeButton, "touchend", this.resumeButton_onClick, this);
+        this.eventMap.mapListener(this.view.retryButton, "touchend", this.retryButton_onClick, this);
+        this.eventMap.mapListener(this.view.levelSelectButton, "pointerup", this.levelSelectButton_onClick, this);
+        this.eventMap.mapListener(this.view.resumeButton, "pointerup", this.resumeButton_onClick, this);
+        this.eventMap.mapListener(this.view.retryButton, "pointerup", this.retryButton_onClick, this);
     }
     public destroy(): void {
         this.eventMap.unmapListeners();

@@ -18,6 +18,12 @@ export class GameOverPopupMediator extends Mediator<GameOverPopup> {
             this.levelSelectButton_onTriggeredHandler,
             this
         );
+        
+        // Add mobile touch support
+        this.eventMap.mapListener(this.view.retryButton, "touchend", this.retryButton_onTriggeredHandler, this);
+        this.eventMap.mapListener(this.view.levelSelectButton, "touchend", this.levelSelectButton_onTriggeredHandler, this);
+        this.eventMap.mapListener(this.view.retryButton, "pointerup", this.retryButton_onTriggeredHandler, this);
+        this.eventMap.mapListener(this.view.levelSelectButton, "pointerup", this.levelSelectButton_onTriggeredHandler, this);
     }
     public destroy(): void {
         this.eventMap.unmapListeners();

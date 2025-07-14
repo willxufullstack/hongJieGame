@@ -49,6 +49,18 @@ export class IconButton extends Sprite {
         this.on("pointerdown", this.onButtonDown);
         this.on("pointerover", this.onButtonOver);
         this.on("pointerout", this.onButtonOut);
+        
+        // Add mobile touch support
+        this.on("touchstart", this.onButtonDown);
+        this.on("touchend", this.onButtonUp);
+        this.on("touchendoutside", this.onButtonUp);
+        
+        // Add mouse events as fallback
+        this.on("mousedown", this.onButtonDown);
+        this.on("mouseup", this.onButtonUp);
+        this.on("mouseupoutside", this.onButtonUp);
+        this.on("mouseover", this.onButtonOver);
+        this.on("mouseout", this.onButtonOut);
     }
     private onButtonDown(): void {
         this._isDown = true;
