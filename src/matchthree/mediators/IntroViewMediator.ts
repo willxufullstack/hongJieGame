@@ -9,7 +9,8 @@ export class IntroViewMediator extends Mediator<IntroView> {
     @inject(FlowService) private flowService: FlowService;
 
     public initialize(): void {
-        setTimeout(this.onTimerOut.bind(this), 3000);
+        // Longer intro time for horror atmosphere
+        setTimeout(this.onTimerOut.bind(this), 4000);
     }
     public destroy(): void {
         this.eventMap.unmapListeners();
