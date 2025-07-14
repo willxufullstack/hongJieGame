@@ -20,6 +20,9 @@ export class HUDGameComponentMediator extends Mediator<HUDGameComponent> {
 
     public initialize(): void {
         this.eventMap.mapListener(this.view.pauseButton, "click", this.pauseButton_onTriggeredHandler, this);
+        // Add mobile touch support
+        this.eventMap.mapListener(this.view.pauseButton, "touchend", this.pauseButton_onTriggeredHandler, this);
+        this.eventMap.mapListener(this.view.pauseButton, "pointerup", this.pauseButton_onTriggeredHandler, this);
         this.eventMap.mapListener(this.eventDispatcher, GameEvent.UPDATE_HUD_DATA, this.game_onUpdateHandler, this);
 
         this.setupHUDType();

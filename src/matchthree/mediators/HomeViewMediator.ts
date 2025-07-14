@@ -11,6 +11,14 @@ export class HomeViewMediator extends Mediator<HomeView> {
     public initialize(): void {
         this.eventMap.mapListener(this.view.playButton, "click", this.playButton_onClick, this);
         this.eventMap.mapListener(this.view.optionsButton, "click", this.optionsButton_onClick, this);
+        
+        // Add mobile touch event support
+        this.eventMap.mapListener(this.view.playButton, "touchend", this.playButton_onClick, this);
+        this.eventMap.mapListener(this.view.optionsButton, "touchend", this.optionsButton_onClick, this);
+        
+        // Add pointer events for modern browsers
+        this.eventMap.mapListener(this.view.playButton, "pointerup", this.playButton_onClick, this);
+        this.eventMap.mapListener(this.view.optionsButton, "pointerup", this.optionsButton_onClick, this);
     }
     public destroy(): void {
         this.eventMap.unmapListeners();
