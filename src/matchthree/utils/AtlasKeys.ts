@@ -12,7 +12,6 @@ export class AtlasKeys {
 
     /* ATLAS PREFIX */
     public static LOGO_HONGJIE = "logo_hongjie.png";
-    public static LOGO_TYPESCRIPT = "./assets/logo_typescript.png";
 
     public static PIECE_NORMAL = "piece_normal";
     public static PIECE_ROW = "piece_row";
