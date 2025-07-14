@@ -16,8 +16,11 @@
         html, body {
             width: 100%;
             height: 100%;
-            background-color: #000;
+            background: url('./assets/backgrounds/horror_loading_bg.jpg') center/cover no-repeat;
+            background-color: #1a0000;
+            background-attachment: fixed;
             overflow: hidden;
+            font-family: 'Arial', sans-serif;
         }
         
         body {
@@ -25,19 +28,324 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
         }
         
         canvas {
-            border: 1px solid #333;
+            border: 2px solid #660000;
             display: block;
+            border-radius: 15px;
+            box-shadow: 
+                0 0 20px rgba(255, 0, 0, 0.3),
+                0 10px 30px rgba(0,0,0,0.6),
+                inset 0 0 10px rgba(102, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('./assets/backgrounds/horror_loading_bg.jpg') center/cover no-repeat;
+            background-color: #1a0000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease-out;
+            overflow: hidden;
+        }
+        
+        #loading-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+        
+        #loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .game-logo {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 
+                0 0 10px #ff0000,
+                0 0 20px #ff0000,
+                0 0 30px #ff0000,
+                2px 2px 0px #660000,
+                4px 4px 0px #330000;
+            margin-bottom: 1rem;
+            animation: horrorGlow 2s ease-in-out infinite alternate;
+            font-family: 'Times New Roman', serif;
+            letter-spacing: 3px;
+            transform: perspective(500px) rotateX(15deg);
+        }
+        
+        .game-subtitle {
+            font-size: 1.3rem;
+            color: #cc0000;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            font-family: 'Times New Roman', serif;
+            animation: flicker 3s ease-in-out infinite;
+        }
+        
+        .loading-skulls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        
+        .skull {
+            width: 35px;
+            height: 35px;
+            background: #ff0000;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            animation: skullBounce 1.5s ease-in-out infinite both;
+            box-shadow: 
+                inset -3px -3px 0px #cc0000,
+                0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        
+        .skull::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 6px;
+            height: 8px;
+            background: #000;
+            border-radius: 50%;
+            box-shadow: 12px 0 0 #000;
+        }
+        
+        .skull::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 6px solid #000;
+        }
+        
+        .skull:nth-child(1) { animation-delay: -0.4s; }
+        .skull:nth-child(2) { animation-delay: -0.2s; }
+        .skull:nth-child(3) { animation-delay: 0s; }
+        .skull:nth-child(4) { animation-delay: 0.2s; }
+        .skull:nth-child(5) { animation-delay: 0.4s; }
+        
+        .loading-text {
+            color: #ff3333;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            animation: bloodDrip 2s ease-in-out infinite;
+            font-family: 'Times New Roman', serif;
+            text-shadow: 
+                2px 2px 0px #660000,
+                0 0 10px #ff0000;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        
+        .loading-text::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 15px;
+            background: linear-gradient(to bottom, #ff0000, #660000);
+            border-radius: 0 0 50% 50%;
+            animation: drip 3s ease-in-out infinite;
+        }
+        
+        .credits {
+            position: absolute;
+            bottom: 30px;
+            color: #cc0000;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            font-family: 'Times New Roman', serif;
+        }
+        
+        @keyframes horrorGlow {
+            from { 
+                text-shadow: 
+                    0 0 10px #ff0000,
+                    0 0 20px #ff0000,
+                    0 0 30px #ff0000,
+                    2px 2px 0px #660000,
+                    4px 4px 0px #330000;
+            }
+            to { 
+                text-shadow: 
+                    0 0 20px #ff0000,
+                    0 0 30px #ff0000,
+                    0 0 40px #ff0000,
+                    2px 2px 0px #660000,
+                    4px 4px 0px #330000;
+            }
+        }
+        
+        @keyframes skullBounce {
+            0%, 80%, 100% { 
+                transform: scale(0.8) rotate(-5deg);
+                opacity: 0.7;
+            }
+            40% { 
+                transform: scale(1.2) rotate(5deg);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes bloodDrip {
+            0%, 100% { 
+                opacity: 0.9;
+                transform: translateY(0px);
+            }
+            50% { 
+                opacity: 1;
+                transform: translateY(2px);
+            }
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 0.9; }
+            10% { opacity: 0.3; }
+            20% { opacity: 0.9; }
+            30% { opacity: 0.4; }
+            40% { opacity: 0.9; }
+            50% { opacity: 0.9; }
+            60% { opacity: 0.2; }
+            70% { opacity: 0.9; }
+            80% { opacity: 0.9; }
+            90% { opacity: 0.5; }
+        }
+        
+        @keyframes drip {
+            0% { 
+                height: 5px;
+                opacity: 0;
+            }
+            50% { 
+                height: 15px;
+                opacity: 1;
+            }
+            100% { 
+                height: 20px;
+                opacity: 0;
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         /* Force centering */
-        body > * {
+        body > canvas {
             margin: 0 auto;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 480px) {
+            .game-logo {
+                font-size: 2rem;
+            }
+            .game-subtitle {
+                font-size: 1rem;
+            }
+            .gem {
+                width: 25px;
+                height: 25px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="game-logo">红姐大魔王</div>
+            <div class="game-subtitle">恐怖三消冒险</div>
+            
+            <div class="loading-skulls">
+                <div class="skull"></div>
+                <div class="skull"></div>
+                <div class="skull"></div>
+                <div class="skull"></div>
+                <div class="skull"></div>
+            </div>
+            
+            <div class="loading-text">血腥加载中...</div>
+        </div>
+        
+        <div class="credits">
+            恐怖游戏工作室出品<br>
+            © 2024 红姐游戏工作室
+        </div>
+    </div>
+
+    <script>
+        // Hide loading screen when game is ready
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen) {
+                    loadingScreen.classList.add('hidden');
+                    setTimeout(function() {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }
+            }, 2000); // Show loading for at least 2 seconds
+        });
+    </script>
 </body>
 </html>
