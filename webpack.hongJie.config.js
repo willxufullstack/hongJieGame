@@ -29,7 +29,11 @@ module.exports = (function (options) {
         template: 'src/index.html'
       }),
       new CopyWebpackPlugin([
-        { from: 'assets', to: 'assets' }
+        { from: 'assets', to: 'assets' },
+        { from: 'src/sitemap.xml', to: 'sitemap.xml' },
+        { from: 'src/robots.txt', to: 'robots.txt' },
+        { from: 'src/manifest.json', to: 'manifest.json' },
+        { from: 'src/config.js', to: 'config.js' }
       ])
     ],
 

@@ -2,10 +2,67 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>红姐大魔王 - HongJie Game</title>
+    <title>红姐大魔王 - 恐怖三消益智游戏 | Horror Match-3 Puzzle Game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="红姐大魔王是一款独特的恐怖主题三消益智游戏，使用TypeScript和PixiJS开发。体验血腥视觉效果、恐怖音效和刺激的消除玩法。支持桌面和移动设备。">
+    <meta name="keywords" content="红姐大魔王,恐怖游戏,三消游戏,益智游戏,HTML5游戏,TypeScript游戏,PixiJS,在线游戏,免费游戏,Horror Game,Match-3,Puzzle Game">
+    <meta name="author" content="红姐游戏工作室">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="zh-CN">
+    
+    <!-- Open Graph Meta Tags for Social Media -->
+    <meta property="og:title" content="红姐大魔王 - 恐怖三消益智游戏">
+    <meta property="og:description" content="体验独特的恐怖主题三消游戏，血腥视觉效果与刺激玩法的完美结合">
+    <meta property="og:image" content="./assets/favicon.jpeg">
+    <meta property="og:url" content="https://hongjie-horror-match3.netlify.app">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="红姐大魔王">
+    <meta property="og:locale" content="zh_CN">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="红姐大魔王 - 恐怖三消益智游戏">
+    <meta name="twitter:description" content="体验独特的恐怖主题三消游戏，血腥视觉效果与刺激玩法的完美结合">
+    <meta name="twitter:image" content="./assets/favicon.jpeg">
+    
+    <!-- Favicon and App Icons -->
     <link rel="icon" type="image/jpeg" href="./assets/favicon.jpeg">
     <link rel="shortcut icon" type="image/jpeg" href="./assets/favicon.jpeg">
+    <link rel="apple-touch-icon" href="./assets/favicon.jpeg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://hongjie-horror-match3.netlify.app">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json">
+    
+    <!-- Theme Color for Mobile Browsers -->
+    <meta name="theme-color" content="#ff0000">
+    <meta name="msapplication-TileColor" content="#1a0000">
+    
+    <!-- Configuration -->
+    <script src="./config.js"></script>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        
+        // 使用配置文件中的GA ID
+        if (window.CONFIG && window.CONFIG.GA_MEASUREMENT_ID !== 'GA_MEASUREMENT_ID') {
+            gtag('config', window.CONFIG.GA_MEASUREMENT_ID);
+            
+            // 更新script src
+            const gaScript = document.querySelector('script[src*="googletagmanager"]');
+            if (gaScript) {
+                gaScript.src = gaScript.src.replace('GA_MEASUREMENT_ID', window.CONFIG.GA_MEASUREMENT_ID);
+            }
+        }
+    </script>
     
     
     <style>
@@ -336,18 +393,42 @@
     </div>
 
     <script>
+        // Google Analytics Events
+        function trackGameEvent(action, category = 'Game', label = '') {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', action, {
+                    'event_category': category,
+                    'event_label': label
+                });
+            }
+        }
+        
         // Hide loading screen when game is ready
         window.addEventListener('load', function() {
+            // Track page load
+            trackGameEvent('page_load', 'Navigation', 'Game Loaded');
+            
             setTimeout(function() {
                 const loadingScreen = document.getElementById('loading-screen');
                 if (loadingScreen) {
                     loadingScreen.classList.add('hidden');
                     setTimeout(function() {
                         loadingScreen.style.display = 'none';
+                        // Track game start
+                        trackGameEvent('game_start', 'Game', 'Loading Complete');
                     }, 500);
                 }
             }, 2000); // Show loading for at least 2 seconds
         });
+        
+        // Track user engagement
+        let engagementTimer = 0;
+        setInterval(function() {
+            engagementTimer += 30;
+            if (engagementTimer % 60 === 0) { // Every minute
+                trackGameEvent('engagement', 'User', engagementTimer + 's');
+            }
+        }, 30000);
     </script>
 </body>
 </html>
