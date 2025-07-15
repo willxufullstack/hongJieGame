@@ -8,6 +8,14 @@
 2. 创建新的属性或使用现有属性
 3. 获取测量ID（格式：G-XXXXXXXXXX）
 
+## Google AdSense 配置
+
+### 1. AdSense 集成
+
+- **客户端ID**: `ca-pub-2388810610392492`
+- **已集成**: 自动广告和手动广告位
+- **追踪**: AdSense加载状态追踪
+
 ### 2. 配置 Analytics ID
 
 在部署前，请修改 `src/config.js` 文件：
@@ -59,6 +67,12 @@ window.CONFIG = {
 - `page_load`: 页面加载完成
 - `game_start`: 游戏开始
 - `engagement`: 用户参与度（每分钟）
+- `adsense_loaded`: AdSense加载成功
+
+### AdSense 收益优化
+- **自动广告**: 已启用，Google自动优化位置
+- **手动广告位**: 可在游戏界面添加横幅广告
+- **移动端优化**: 响应式广告设计
 
 ### 可以添加的额外事件
 - 关卡完成
