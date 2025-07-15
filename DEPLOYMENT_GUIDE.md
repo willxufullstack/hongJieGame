@@ -24,10 +24,7 @@ window.CONFIG = {
 1. 连接 GitHub 仓库到 Netlify
 2. 设置构建命令：`npm run build`
 3. 设置发布目录：`dist`
-4. 部署完成后，更新以下文件中的域名：
-   - `src/index.html` 中的 canonical URL 和 og:url
-   - `src/sitemap.xml` 中的网站地址
-   - `src/config.js` 中的 SITE_URL
+4. 域名已配置为：`https://game.nzpowercompare.com`
 
 ## SEO 优化清单
 

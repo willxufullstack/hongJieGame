@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://hongjie-horror-match3.netlify.app/sitemap.xml
+Sitemap: https://game.nzpowercompare.com/sitemap.xml
 
 # Crawl-delay for better server performance
 Crawl-delay: 1
