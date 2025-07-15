@@ -1,7 +1,7 @@
 // 配置文件 - 在部署时请替换为实际的Google Analytics ID
 window.CONFIG = {
     // Google Analytics配置
-    GA_MEASUREMENT_ID: 'GA_MEASUREMENT_ID', // 请替换为实际的GA ID，格式如: 'G-XXXXXXXXXX'
+    GA_MEASUREMENT_ID: 'G-CWPP6NPN6Q', // Google Analytics 4 测量ID
     
     // 网站配置
     SITE_URL: 'https://hongjie-horror-match3.netlify.app',
